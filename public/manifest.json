@@ -14,13 +14,8 @@
     "128": "app-icon.png"
   },
   "web_accessible_resources": [
-    "js/*",
-    "html/*",
-    "css/*",
-    "img/*"
   ],
   "permissions": [
-    "storage",
-    "activeTab"
+    "storage"
   ]
 }
