@@ -95,7 +95,7 @@ export default class Login extends React.Component {
                 type='text'
                 value={this.state.address}
                 prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder='Klaytn Address'
+                placeholder='EOS Account'
                 onChange={e => this.handleChange(e)}
               />
             </FormItem>

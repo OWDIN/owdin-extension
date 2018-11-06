@@ -9,9 +9,9 @@
     "default_title": "OWDIN Extension"
   },
   "icons": {
-    "16": "app-icon.png",
-    "48": "app-icon.png",
-    "128": "app-icon.png"
+    "16": "apple-icon-60x60.png",
+    "48": "apple-icon-76x76.png",
+    "128": "apple-icon-144x144.png"
   },
   "web_accessible_resources": [
   ],
