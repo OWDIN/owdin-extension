@@ -27,7 +27,7 @@ export default class Login extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    localStorage.setItem('address', this.state.address)
+    localStorage.setItem('accountName', this.state.address)
     localStorage.setItem('privateKey', this.state.privateKey)
 
     this.setState({
@@ -35,10 +35,6 @@ export default class Login extends React.Component {
       privateKey: '',
       isLogin: true,
     })
-
-    // setTimeout(1000, () => window.location.replace('/'))
-    // setTimeout(1000, () => { window.location.href = '/' })
-    // setTimeout(100, () => this.props.history.push('/'))
   }
 
   handleChange = (event) => {
@@ -48,9 +44,9 @@ export default class Login extends React.Component {
   }
 
   render() {
-    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey') !== null && this.state.isLogin === true) {
-      window.location.replace('/index.html')
-    }
+    // if (localStorage.getItem('accountName') !== null && localStorage.getItem('privateKey') !== null && this.state.isLogin === true) {
+    //   window.location.replace('/index.html')
+    // }
 
     return (
       <Div
@@ -63,8 +59,8 @@ export default class Login extends React.Component {
         <Div
           width='100%'
           display='flex'
-          align-items='center'
-          flex-direction='column'
+          alignItems='center'
+          flexDirection='column'
         >
           <Img
             src={AppIcon}

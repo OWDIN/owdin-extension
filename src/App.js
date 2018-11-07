@@ -73,7 +73,7 @@ const sidebar = (
       <UpperDiv style={{ marginTop: '10px' }}>
         <b>
           {/* { localStorage.getItem('nickname') || faker.internet.userName() } */}
-          { 'No Data' || localStorage.getItem('account') }
+          { localStorage.getItem('accountName') || 'No Data' }
         </b>
       </UpperDiv>
       <UpperDiv>
@@ -96,9 +96,9 @@ const sidebar = (
       mode='inline'
       defaultSelectedKeys={[window.location.href.split('#')[1]]}
     >
-      <Menu.Item key='/feed'>
-        <NavLink to='/feed'>
-          <Icon type='message' theme='outlined' />
+      <Menu.Item key='/dashboard'>
+        <NavLink to='/dashboard'>
+          <Icon type='dashboard' theme='outlined' />
           <span>Comments</span>
         </NavLink>
       </Menu.Item>
@@ -169,7 +169,9 @@ class App extends React.Component {
   }
 
   render() {
-    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey') !== null) {
+    console.log('[App::render()]')
+    if (localStorage.getItem('accountName') !== null && localStorage.getItem('privateKey') !== null) {
+      console.log('[App::render()] LoggedIn')
       return (
         <HashRouter>
           <Layout

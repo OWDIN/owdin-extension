@@ -2,11 +2,22 @@
   "manifest_version": 2,
   "name": "OWDIN Extension",
   "short_name": "OWDIN Extension",
+  "author": "https://owdin.network",
+  "description": "Browser Extension for OWDIN Network",
   "version": "0.0.1",
-  "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "OWDIN Extension"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "windows": "Alt+Shift+O",
+        "mac": "Alt+Shift+O",
+        "chromeos": "Alt+Shift+O",
+        "linux": "Alt+Shift+O"
+      }
+    }
   },
   "icons": {
     "16": "apple-icon-60x60.png",
@@ -16,6 +27,13 @@
   "web_accessible_resources": [
   ],
   "permissions": [
-    "storage"
+    "storage",
+    "unlimitedStorage",
+    "clipboardWrite",
+    "http://localhost:8888/",
+    "http://localhost:9876/",
+    "activeTab",
+    "webRequest",
+    "notifications"
   ]
 }
