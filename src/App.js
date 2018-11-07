@@ -20,7 +20,6 @@ import {
   Div,
 } from 'glamorous'
 import styled from 'styled-components'
-import faker from 'faker'
 import history from './utils/history'
 import Header from './layouts/Header'
 import IndexRouter from './routes/IndexRouter'
@@ -62,7 +61,7 @@ const sidebar = (
       padding='20px'
     >
       <Avatar
-        src={faker.internet.avatar()}
+        // src={faker.internet.avatar()}
         shape='circle'
         size={64}
         icon='user'
@@ -73,7 +72,8 @@ const sidebar = (
       />
       <UpperDiv style={{ marginTop: '10px' }}>
         <b>
-          { localStorage.getItem('nickname') || faker.internet.userName() }
+          {/* { localStorage.getItem('nickname') || faker.internet.userName() } */}
+          { 'No Data' || localStorage.getItem('account') }
         </b>
       </UpperDiv>
       <UpperDiv>
