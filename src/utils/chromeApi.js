@@ -3,7 +3,6 @@
  * Chrome API Specification
  */
 
-
 export const sample = {
   version: '0.0.x',
   keyPairs: {
@@ -15,6 +14,10 @@ export const sample = {
       '5KsfkDq1********',
     ],
   },
+  authenticate: {
+    passphrase: 'sample-string',
+  },
+  status: 'online', // online, offline, locked, unset
 }
 
 export function version() {
@@ -22,10 +25,12 @@ export function version() {
     /* eslint-disable */
     chrome.storage.local.set({
       version: '0.0.1',
+      debug: true,
     });
     /* eslint-enable */
   } catch (error) {
     localStorage.setItem('version', '0.0.1')
+    localStorage.setItem('debug', true)
   }
 }
 
@@ -37,18 +42,38 @@ export function isExtension() {
   return false
 }
 
+export function getStatus() {
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.get('status', result => {
+        return result
+      })
+      /* eslint-enable */
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // for test
+  return localStorage.getItem('status') || 'unset'
+}
+
 export function setPassphrase(passphrase) {
-  try {
-    /* eslint-disable */
-    chrome.storage.local.set({
-      authenticate: {
-        passphrase,
-      },
-    })
-    /* eslint-enable */
-  } catch (error) {
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.set({
+        authenticate: {
+          passphrase,
+        },
+      })
+      /* eslint-enable */
+    } catch (error) {
+      throw error
+    }
+  } else {
     localStorage.setItem('passphrase', passphrase)
-    console.log(error)
   }
 }
 
@@ -102,7 +127,7 @@ export function setKeyPairs(accountName, privateKeys) {
   let pairs = []
   try {
     /* eslint-disable */
-    chrome.storage.local.get('KeyPairs', items => {
+    chrome.storage.local.get('keyPairs', items => {
       pairs = items
     })
 
@@ -116,19 +141,13 @@ export function setKeyPairs(accountName, privateKeys) {
     })
     /* eslint-enable */
   } catch (error) {
-    localStorage.setItem('accountName', accountName)
-    localStorage.setItem(accountName, privateKeys)
+    localStorage.setItem('keyPairs', { accountName: privateKeys })
     console.log(error)
   }
 }
 
 export function isLoggedIn() {
-  if (getPassphrase() !== false) {
-    return true
-  }
-
-  // for local test only
-  if (localStorage.getItem('passphrase') !== null) {
+  if (['online', 'offline'].includes(getStatus())) {
     return true
   }
 

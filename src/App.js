@@ -10,20 +10,24 @@ import {
   Icon,
   Layout,
   Menu,
-  message,
+  // message,
   // Tag,
-  Tooltip,
+  // Tooltip,
 } from 'antd'
 import Sidebar from 'react-sidebar'
-import Clipboard from 'react-clipboard.js'
+// import Clipboard from 'react-clipboard.js'
 import {
   Div,
 } from 'glamorous'
 import styled from 'styled-components'
 import history from './utils/history'
+import {
+  getStatus,
+} from './utils/chromeApi'
 import Header from './layouts/Header'
 import IndexRouter from './routes/IndexRouter'
 import Login from './pages/Login'
+import Setup from './pages/Setup'
 import './assets/css/layout.less'
 
 const {
@@ -61,35 +65,30 @@ const sidebar = (
       padding='20px'
     >
       <Avatar
-        // src={faker.internet.avatar()}
+        src={`https://avatars.dicebear.com/v2/identicon/${localStorage.getItem('accountName')}.svg`}
         shape='circle'
-        size={64}
+        size={52}
         icon='user'
-        // style={{
-        //   color: '#faad14', // gold-2
-        //   background: '#fff1b8', // gold-6
-        // }}
       />
       <UpperDiv style={{ marginTop: '10px' }}>
         <b>
-          {/* { localStorage.getItem('nickname') || faker.internet.userName() } */}
-          { localStorage.getItem('accountName') || 'No Data' }
+          { localStorage.getItem('accountName') }
         </b>
       </UpperDiv>
       <UpperDiv>
         1000 EOS
       </UpperDiv>
       <div>
-        <Tooltip placement='top' title='Copy address'>
+        {/* <Tooltip placement='top' title='Copy address'>
           <Clipboard
             key='1'
             component='span'
             data-clipboard-text='0x58BEa8bD7938be0d87B2B235920BDeC828225c5e'
             onSuccess={() => message.success('Copied!', 1.5)}
           >
-            {/* <EllipsisTag>0x58BEa8bD7938be0d87B2B235920BDeC828225c5e</EllipsisTag> */}
+            <EllipsisTag>0x58BEa8bD7938be0d87B2B235920BDeC828225c5e</EllipsisTag>
           </Clipboard>
-        </Tooltip>
+        </Tooltip> */}
       </div>
     </Div>
     <Menu
@@ -99,7 +98,7 @@ const sidebar = (
       <Menu.Item key='/dashboard'>
         <NavLink to='/dashboard'>
           <Icon type='dashboard' theme='outlined' />
-          <span>Comments</span>
+          <span>Dashboard</span>
         </NavLink>
       </Menu.Item>
       <Menu.Item key='/wallet'>
@@ -155,59 +154,76 @@ class App extends React.Component {
 
   resize = () => {
     if (window.innerWidth <= 576) {
-      this.setState({
-        open: false,
-        docked: false,
-      })
+      if (this.state.docked === true) {
+        this.setState({
+          open: false,
+          docked: false,
+        })
+      }
     }
+
     if (window.innerWidth >= 1200) {
-      this.setState({
-        open: false,
-        docked: true,
-      })
+      if (this.state.docked === false) {
+        this.setState({
+          open: false,
+          docked: true,
+        })
+      }
     }
   }
 
   render() {
-    console.log('[App::render()]')
-    if (localStorage.getItem('accountName') !== null && localStorage.getItem('privateKey') !== null) {
-      console.log('[App::render()] LoggedIn')
-      return (
-        <HashRouter>
-          <Layout
-            style={{
-              minHeight: '100vh',
-            }}
-          >
-            <Sidebar
-              sidebar={sidebar}
-              open={this.state.open}
-              onSetOpen={this.toggleSidebar}
-              docked={this.state.docked}
-              styles={{
-                sidebar: {
-                  background: 'white',
-                  width: '220px',
-                },
+    const status = getStatus()
+
+    switch (status) {
+      case 'online':
+      case 'offline':
+        return (
+          <HashRouter>
+            <Layout
+              style={{
+                minHeight: '100vh',
               }}
             >
-              <Header
+              <Sidebar
+                sidebar={sidebar}
                 open={this.state.open}
-                toggle={this.toggleSidebar}
-              />
-              <Content>
-                <IndexRouter />
-              </Content>
-            </Sidebar>
-          </Layout>
-        </HashRouter>
-      )
+                onSetOpen={this.toggleSidebar}
+                docked={this.state.docked}
+                styles={{
+                  sidebar: {
+                    background: 'white',
+                    width: '220px',
+                  },
+                }}
+              >
+                <Header
+                  open={this.state.open}
+                  toggle={this.toggleSidebar}
+                />
+                <Content>
+                  <IndexRouter />
+                </Content>
+              </Sidebar>
+            </Layout>
+          </HashRouter>
+        )
+      case 'locked':
+        return (
+          <HashRouter>
+            <Switch history={history}>
+              <Route component={Login} />
+            </Switch>
+          </HashRouter>
+        )
+      default:
+        break;
     }
 
     return (
       <HashRouter>
         <Switch history={history}>
-          <Route component={Login} />
+          <Route component={Setup} />
         </Switch>
       </HashRouter>
     )
