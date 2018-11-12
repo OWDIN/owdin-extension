@@ -10,6 +10,11 @@ import {
   H1,
   Img,
 } from 'glamorous'
+import {
+  version,
+  isLoggedIn,
+  isValidPassphrase,
+} from '../utils/chromeApi'
 import AppIcon from '../assets/img/owdin-bi-color.svg'
 
 const FormItem = Form.Item
@@ -19,21 +24,20 @@ export default class Login extends React.Component {
     super()
 
     this.state = {
-      address: '',
-      privateKey: '',
-      isLogin: false,
+      passphrase: '',
     }
   }
 
   onSubmit = (event) => {
     event.preventDefault()
-    localStorage.setItem('accountName', this.state.address)
-    localStorage.setItem('privateKey', this.state.privateKey)
+
+    version()
+    if (isValidPassphrase(this.state.passphrase)) {
+      window.location.replace('/index.html')
+    }
 
     this.setState({
-      address: '',
-      privateKey: '',
-      isLogin: true,
+      passphrase: '',
     })
   }
 
@@ -44,9 +48,9 @@ export default class Login extends React.Component {
   }
 
   render() {
-    // if (localStorage.getItem('accountName') !== null && localStorage.getItem('privateKey') !== null && this.state.isLogin === true) {
-    //   window.location.replace('/index.html')
-    // }
+    if (isLoggedIn() === true) {
+      window.location.replace('/index.html')
+    }
 
     return (
       <Div
@@ -71,7 +75,7 @@ export default class Login extends React.Component {
           <H1
             marginTop='10px'
           >
-            OWDIN Extension
+            OWDIN Wallet
           </H1>
         </Div>
         <Div>
@@ -86,23 +90,12 @@ export default class Login extends React.Component {
           >
             <FormItem>
               <Input
-                id='address'
-                name='address'
-                type='text'
-                value={this.state.address}
-                prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder='EOS Account'
-                onChange={e => this.handleChange(e)}
-              />
-            </FormItem>
-            <FormItem>
-              <Input
-                id='privateKey'
-                name='privateKey'
+                id='passphrase'
+                name='passphrase'
                 type='password'
-                value={this.state.privateKey}
+                value={this.state.passphrase}
                 prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder='Private Key'
+                placeholder='Passphrase'
                 onChange={e => this.handleChange(e)}
               />
             </FormItem>
@@ -111,12 +104,12 @@ export default class Login extends React.Component {
                 textAlign: 'center',
               }}
             >
-              <Button type='primary' htmlType='submit' className='login-form-button'>
-                Log in
+              <Button type='primary' htmlType='submit'>
+                Unlock
               </Button>
-              <span style={{ marginLeft: '10px' }}>
-                or <a href='https://eos.io' target='_blank' rel='noopener noreferrer'>Create New EOS Account</a>
-              </span>
+              <div>
+                <a href='https://eos.io' target='_blank' rel='noopener noreferrer'>Restore your accout</a>
+              </div>
             </FormItem>
           </Form>
         </Div>

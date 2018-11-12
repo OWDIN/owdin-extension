@@ -1,2 +1,2 @@
-# OWDIN Chrome Extension
-⚙️ Chrome Extension for OWDIN Services
+# OWDIN Wallet - Browser Extension
+⚙️ Browser Extension for OWDIN Wallet
