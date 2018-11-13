@@ -1,5 +1,6 @@
 {
-  "name": "owdin-chrome-extension",
+  "name": "owdin-extension",
+  "description": "Browser extension for OWDIN Port",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
