@@ -16,16 +16,15 @@ import {
 import styled from 'styled-components'
 
 const UpperDiv = styled.div`
-margin-bottom: 10px;
+  margin-bottom: 10px;
 `
 
 const BottomBtn = styled.div`
-bottom: 0;
-position: absolute;
-width: 100%;
-text-align: center;
-height: 44px;
-}
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height: 44px;
 `
 
 // const EllipsisTag = styled(Tag)`

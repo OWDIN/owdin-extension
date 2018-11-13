@@ -1,2 +1,2 @@
-# OWDIN Wallet - Browser Extension
+# OWDIN Browser Extension
 ⚙️ Browser Extension for OWDIN Wallet
