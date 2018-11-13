@@ -154,4 +154,12 @@ export function isLoggedIn() {
   return false
 }
 
+export function newWindow() {
+  if (this.isExtension()) {
+    chrome.tabs.create({ url: window.location.href })
+  } else {
+    window.open(window.location.href)
+  }
+}
+
 export default version
