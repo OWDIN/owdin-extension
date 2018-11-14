@@ -84,7 +84,7 @@ export function setPassphrase(passphrase) {
 export function getPassphrase() {
   try {
     /* eslint-disable */
-    if (this.isExtension()) {
+    if (isExtension()) {
       chrome.storage.local.get('authenticate', items => {
         return items.passphrase
       })
@@ -101,7 +101,7 @@ export function getPassphrase() {
 
 export function isValidPassphrase(passphrase) {
   try {
-    if (this.isExtension()) {
+    if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.get('authenticate', items => {
         if (items.passphrase === passphrase) {
@@ -159,14 +159,15 @@ export function isLoggedIn() {
 }
 
 export function isTabExist() {
+  // wip
   return true
 }
 
 export function newWindow() {
-  if (this.isExtension()) {
+  if (isExtension()) {
     chrome.tabs.create({ url: window.location.href })
   } else {
-    window.open(window.location.href)
+    window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
   }
 }
 

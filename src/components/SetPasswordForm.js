@@ -57,6 +57,9 @@ class SetPassword extends React.Component {
         this.setState({
           checkConfirmStatus: 'error',
           helpConfirmMessage: 'Password does not match each other.',
+        }, () => {
+          this.props.setPassword('')
+          this.props.allowNext(false)
         })
       } else if (this.state.password2.length === 0) {
         this.setState({
@@ -67,6 +70,9 @@ class SetPassword extends React.Component {
         this.setState({
           checkConfirmStatus: 'success',
           helpConfirmMessage: 'Confirmed!',
+        }, () => {
+          this.props.setPassword(this.state.password1)
+          this.props.allowNext(true)
         })
       }
     })

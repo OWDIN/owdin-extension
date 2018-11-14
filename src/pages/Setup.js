@@ -13,6 +13,8 @@ import {
   isExtension,
   isTabExist,
   newWindow,
+  setPassphrase,
+  setKeyPairs,
 } from '../utils/chromeApi'
 import SetPasswordForm from '../components/SetPasswordForm'
 import AppIcon from '../assets/img/owdin-bi-color.svg'
@@ -52,35 +54,23 @@ const StepButtonDiv = styled.div`
 `
 
 const Step = Steps.Step;
-const steps = [{
-  title: 'Create Password',
-  description: 'Set up your password for extension',
-  content: <SetPasswordForm />,
-}, {
-  title: 'Import Account',
-  description: 'Store your account securely',
-  content: 'Second-content',
-}, {
-  title: 'Agreement',
-  description: 'Term of Use',
-  content: 'Last-content',
-}]
 
 class Setup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       current: 0,
-    };
-  }
-
-  togglePopupWindow = () => {
-    window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
+      password: '',
+      account: '',
+      privateKey: '',
+      disabledNext: true,
+    }
   }
 
   toggleNext = () => {
     this.setState(prevState => ({
       current: prevState.current + 1,
+      disabledNext: true,
     }))
   }
 
@@ -90,10 +80,54 @@ class Setup extends React.Component {
     }))
   }
 
+  allowNext = (bool) => {
+    if (typeof bool === 'boolean') {
+      this.setState({
+        disabledNext: !bool,
+      }, () => { console.log(this.state) })
+    } else {
+      return false
+    }
+
+    return true
+  }
+
+  setPassword = (password) => {
+    this.setState({
+      password,
+    }, () => { console.log(this.state) })
+  }
+
+  setKeyPair = (account, privateKey) => {
+    this.setState({
+      account,
+      privateKey,
+    })
+  }
+
+  done = () => {
+    setPassphrase(this.state.password)
+    setKeyPairs(this.state.account, this.state.privateKey)
+  }
+
   render() {
     if (isExtension() && !isTabExist()) {
       newWindow()
     }
+
+    const steps = [{
+      title: 'Create Password',
+      description: 'Set up your password for extension',
+      content: <SetPasswordForm setPassword={this.setPassword} allowNext={this.allowNext} />,
+    }, {
+      title: 'Import Account',
+      description: 'Store your account securely',
+      content: 'Second-content',
+    }, {
+      title: 'Agreement',
+      description: 'Term of Use',
+      content: 'Last-content',
+    }]
 
     const { current } = this.state;
     return (
@@ -106,7 +140,7 @@ class Setup extends React.Component {
             height='52px'
           />
           <H1>Set up your wallet</H1>
-          <span id='open-popup' role='presentation' onClick={() => this.togglePopupWindow()}>
+          <span id='open-popup' role='presentation' onClick={() => newWindow()}>
             {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
             <span>Open in a new Popup Window</span>
             {/* </a> */}
@@ -136,11 +170,27 @@ class Setup extends React.Component {
           }
           {
             current < steps.length - 1
-            && <Button type='primary' onClick={() => this.toggleNext()}>Next</Button>
+            && (
+              <Button
+                type='primary'
+                onClick={() => this.toggleNext()}
+                disabled={this.state.disabledNext}
+              >
+                Next
+              </Button>
+            )
           }
           {
             current === steps.length - 1
-            && <Button type='primary' onClick={() => message.success('Processing complete!')}>Done</Button>
+            && (
+              <Button
+                type='primary'
+                onClick={() => message.success('Processing complete!')}
+                disabled={this.state.disabledNext}
+              >
+                Done
+              </Button>
+            )
           }
         </StepButtonDiv>
       </WrapperDiv>
