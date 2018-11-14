@@ -77,6 +77,7 @@ class Setup extends React.Component {
   togglePrev = () => {
     this.setState(prevState => ({
       current: prevState.current - 1,
+      disabledNext: false,
     }))
   }
 
@@ -118,7 +119,13 @@ class Setup extends React.Component {
     const steps = [{
       title: 'Create Password',
       description: 'Set up your password for extension',
-      content: <SetPasswordForm setPassword={this.setPassword} allowNext={this.allowNext} />,
+      content: (
+        <SetPasswordForm
+          password={this.state.password}
+          setPassword={this.setPassword}
+          allowNext={this.allowNext}
+        />
+      ),
     }, {
       title: 'Import Account',
       description: 'Store your account securely',

@@ -51,29 +51,29 @@ class SetPassword extends React.Component {
           helpMessage: '',
           checkStatus: 'success',
         })
-      }
 
-      if (this.state.password2.length > 0 && this.state.password2 !== this.state.password1) {
-        this.setState({
-          checkConfirmStatus: 'error',
-          helpConfirmMessage: 'Password does not match each other.',
-        }, () => {
-          this.props.setPassword('')
-          this.props.allowNext(false)
-        })
-      } else if (this.state.password2.length === 0) {
-        this.setState({
-          checkConfirmStatus: '',
-          helpConfirmMessage: '',
-        })
-      } else {
-        this.setState({
-          checkConfirmStatus: 'success',
-          helpConfirmMessage: 'Confirmed!',
-        }, () => {
-          this.props.setPassword(this.state.password1)
-          this.props.allowNext(true)
-        })
+        if (this.state.password2.length > 0 && this.state.password2 !== this.state.password1) {
+          this.setState({
+            checkConfirmStatus: 'error',
+            helpConfirmMessage: 'Password does not match each other.',
+          }, () => {
+            this.props.setPassword('')
+            this.props.allowNext(false)
+          })
+        } else if (this.state.password2.length === 0) {
+          this.setState({
+            checkConfirmStatus: '',
+            helpConfirmMessage: '',
+          })
+        } else {
+          this.setState({
+            checkConfirmStatus: 'success',
+            helpConfirmMessage: 'Confirmed!',
+          }, () => {
+            this.props.setPassword(this.state.password1)
+            this.props.allowNext(true)
+          })
+        }
       }
     })
   }
@@ -103,7 +103,7 @@ class SetPassword extends React.Component {
               type='password'
               id='password1'
               name='password1'
-              value={this.state.password1}
+              value={this.props.password || this.state.password1}
               placeholder='Password'
               onChange={e => this.handleChange(e)}
             />
@@ -120,7 +120,7 @@ class SetPassword extends React.Component {
               type='password'
               id='password2'
               name='password2'
-              value={this.state.password2}
+              value={this.props.password || this.state.password2}
               placeholder='Confirm Password'
               onChange={e => this.handleChange(e)}
             />
