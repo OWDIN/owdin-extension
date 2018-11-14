@@ -74,6 +74,7 @@ typings/
 
 # production
 /build
+build.zip
 
 # test scripts
 test_*.sh
