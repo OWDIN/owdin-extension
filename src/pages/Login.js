@@ -68,7 +68,7 @@ export default class Login extends React.Component {
         >
           <Img
             src={AppIcon}
-            alt='Addit App Icon'
+            alt='OWDIN Wallet Icon'
             width='52px'
             height='52px'
           />
