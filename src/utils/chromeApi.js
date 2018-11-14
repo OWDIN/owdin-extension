@@ -35,8 +35,12 @@ export function version() {
 }
 
 export function isExtension() {
-  if (typeof chrome.storage === 'object') {
-    return true
+  try {
+    if (typeof chrome.storage === 'object') {
+      return true
+    }
+  } catch (error) {
+    console.log(error)
   }
 
   return false
@@ -152,6 +156,10 @@ export function isLoggedIn() {
   }
 
   return false
+}
+
+export function isTabExist() {
+  return true
 }
 
 export function newWindow() {
