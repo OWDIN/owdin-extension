@@ -17,6 +17,7 @@ import {
   setKeyPairs,
 } from '../utils/chromeApi'
 import SetPasswordForm from '../components/SetPasswordForm'
+import SetKeyPairForm from '../components/SetKeyPairForm'
 import AppIcon from '../assets/img/owdin-bi-color.svg'
 
 const WrapperDiv = styled.div`
@@ -71,21 +72,25 @@ class Setup extends React.Component {
     this.setState(prevState => ({
       current: prevState.current + 1,
       disabledNext: true,
-    }))
+    }), () => {
+      console.log(this.state)
+    })
   }
 
   togglePrev = () => {
     this.setState(prevState => ({
       current: prevState.current - 1,
       disabledNext: false,
-    }))
+    }), () => {
+      console.log(this.state)
+    })
   }
 
   allowNext = (bool) => {
     if (typeof bool === 'boolean') {
       this.setState({
         disabledNext: !bool,
-      }, () => { console.log(this.state) })
+      })
     } else {
       return false
     }
@@ -96,7 +101,7 @@ class Setup extends React.Component {
   setPassword = (password) => {
     this.setState({
       password,
-    }, () => { console.log(this.state) })
+    })
   }
 
   setKeyPair = (account, privateKey) => {
@@ -129,7 +134,14 @@ class Setup extends React.Component {
     }, {
       title: 'Import Account',
       description: 'Store your account securely',
-      content: 'Second-content',
+      content: (
+        <SetKeyPairForm
+          account={this.state.account}
+          privateKey={this.state.privateKey}
+          setKeyPair={this.setKeyPair}
+          allowNext={this.allowNext}
+        />
+      ),
     }, {
       title: 'Agreement',
       description: 'Term of Use',
