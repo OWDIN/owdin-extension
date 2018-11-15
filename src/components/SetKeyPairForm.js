@@ -5,6 +5,10 @@ import {
   Input,
 } from 'antd'
 import styled from 'styled-components'
+import {
+  getAccountsByPubKey,
+  privToPub,
+} from '../utils/eosJsApi'
 
 const FormItem = Form.Item
 
@@ -18,7 +22,7 @@ class SetPassword extends React.Component {
 
     this.state = {
       account: this.props.account || '',
-      publicKey: '',
+      publicKey: this.props.publicKey || '',
       privateKey: this.props.privateKey || '',
       accountCheck: '',
       accountHelpMsg: '',
@@ -29,9 +33,47 @@ class SetPassword extends React.Component {
 
 
   componentDidMount() {
-    if (this.state.privateKey.length === 51) {
+    if (this.state.publicKey.length !== 0) {
+      this.checkAccountExist(this.state.publicKey)
+    }
+  }
+
+  checkAccountExist = (publicKey) => {
+    // check private key is valid
+    if (this.state.account === '') {
       this.setState({
-        publicKey: 'PUBLIC_KEY_SAMPLE',
+        accountCheck: 'validating',
+        accountHelpMsg: 'Checking...',
+      }, async () => {
+        const accountList = await getAccountsByPubKey(publicKey)
+
+        if (accountList !== false) {
+          this.setState({
+            account: accountList[0],
+            accountCheck: 'success',
+            accountHelpMsg: 'Found!',
+            privateKeyCheck: 'success',
+            privateKeyHelpMsg: 'Confirmed!',
+          }, () => {
+            this.props.setKeyPair(this.state.account, this.state.privateKey)
+            this.props.allowNext(true)
+          })
+        } else {
+          this.setState({
+            account: 'No Accounts Found',
+            accountCheck: 'error',
+            accountHelpMsg: 'No accounts were found connected to this private key. Make sure there is an EOS account linked to this public key on the EOS network.',
+          })
+        }
+      })
+    } else {
+      this.setState({
+        account: '',
+        accountCheck: '',
+        accountHelpMsg: '',
+        publicKey: '',
+        privateKeyCheck: 'error',
+        privateKeyHelpMsg: 'Invalid Private Key.',
       })
     }
   }
@@ -40,32 +82,23 @@ class SetPassword extends React.Component {
     this.setState({
       [event.target.name]: event.target.value,
     }, () => {
-      if (this.state.account.length <= 0) {
+      console.log(this.state)
+      // check private key
+      if (this.state.privateKey.length === 0) {
         this.setState({
           account: '',
           accountCheck: '',
           accountHelpMsg: '',
-        })
-      } else if (this.state.account.length > 12) {
-        this.setState(prevState => ({
-          account: prevState.account,
-          accountCheck: 'warning',
-          accountHelpMsg: 'It must be 12 characters or lower.',
-        }))
-      } else {
-        this.setState({
-          accountHelpMsg: '',
-          accountCheck: 'success',
-        })
-      }
-
-      if (this.state.privateKey.length === 0) {
-        this.setState({
+          publicKey: '',
           privateKeyCheck: '',
           privateKeyHelpMsg: '',
         })
       } else if (this.state.privateKey.length !== 51) {
         this.setState({
+          account: '',
+          accountCheck: '',
+          accountHelpMsg: '',
+          publicKey: '',
           privateKeyCheck: 'error',
           privateKeyHelpMsg: 'Invalid Private Key.',
         }, () => {
@@ -73,12 +106,14 @@ class SetPassword extends React.Component {
           this.props.allowNext(false)
         })
       } else {
+        const privKey = this.state.privateKey
         this.setState({
-          privateKeyCheck: 'success',
-          privateKeyHelpMsg: 'Confirmed!',
+          accountCheck: 'validating',
+          accountHelpMsg: 'Checking...',
+          publicKey: privToPub(privKey),
         }, () => {
-          this.props.setKeyPair(this.state.account, this.state.privateKey)
-          this.props.allowNext(true)
+          // check account exist
+          this.checkAccountExist(this.state.publicKey)
         })
       }
     })
@@ -90,7 +125,7 @@ class SetPassword extends React.Component {
         <Form>
           <FormItem
             validateStatus={this.state.accountCheck}
-            hasFeedback={this.state.account.length > 0}
+            hasFeedback={this.state.accountCheck !== ''}
             help={this.state.accountHelpMsg}
           >
             <Input
@@ -102,7 +137,8 @@ class SetPassword extends React.Component {
               name='account'
               value={this.state.account}
               placeholder='EOS Account'
-              onChange={e => this.handleChange(e)}
+              readOnly
+              disabled
             />
           </FormItem>
           <FormItem>
@@ -121,7 +157,7 @@ class SetPassword extends React.Component {
           </FormItem>
           <FormItem
             validateStatus={this.state.privateKeyCheck}
-            hasFeedback={this.state.privateKey.length > 0}
+            hasFeedback={this.state.privateKeyCheck.length > 0}
             help={this.state.privateKeyHelpMsg}
           >
             <Input

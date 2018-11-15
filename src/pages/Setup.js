@@ -145,7 +145,7 @@ class Setup extends React.Component {
     }, {
       title: 'Agreement',
       description: 'Term of Use',
-      content: 'Last-content',
+      content: 'You expressly understand and agree that your use of the this app is at your sole risk.',
     }]
 
     const { current } = this.state;
@@ -205,9 +205,8 @@ class Setup extends React.Component {
               <Button
                 type='primary'
                 onClick={() => message.success('Processing complete!')}
-                disabled={this.state.disabledNext}
               >
-                Done
+                Accept
               </Button>
             )
           }
