@@ -63,6 +63,23 @@ export function getStatus() {
   return localStorage.getItem('status') || 'unset'
 }
 
+export function setStatus(status) {
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.set({
+        status,
+      })
+      /* eslint-enable */
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // for test
+  localStorage.setItem('status', status)
+}
+
 export function setPassphrase(passphrase) {
   if (isExtension()) {
     try {
@@ -105,16 +122,39 @@ export function isValidPassphrase(passphrase) {
       /* eslint-disable */
       chrome.storage.local.get('authenticate', items => {
         if (items.passphrase === passphrase) {
+          setStatus('online')
           return true
         }
       })
       /* eslint-enable */
     }
   } catch (error) {
-    // console.log(this, error)
-    if (localStorage.getItem('passphrase') === passphrase) {
-      return true
+    console.log(error)
+  }
+
+  if (localStorage.getItem('passphrase') === passphrase) {
+    setStatus('online')
+    return true
+  }
+
+  return false
+}
+
+export function getKeyPairs() {
+  let pairs = []
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.get('keyPairs', items => {
+        pairs = items
+      })
+      return pairs
+      /* eslint-enable */
+    } catch (error) {
+      console.log(error)
     }
+  } else {
+    return localStorage.getItem('keyPairs')
   }
 
   return false
@@ -129,24 +169,27 @@ export function isValidPassphrase(passphrase) {
 // NOTE: MUST BE IMPROVE
 export function setKeyPairs(accountName, privateKeys) {
   let pairs = []
-  try {
-    /* eslint-disable */
-    chrome.storage.local.get('keyPairs', items => {
-      pairs = items
-    })
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.get('keyPairs', items => {
+        pairs = items
+      })
 
-    pairs = {
-      ...pairs,
-      [accountName]: privateKeys
+      pairs = {
+        ...pairs,
+        [accountName]: privateKeys
+      }
+
+      chrome.storage.local.set({
+        keyPairs: pairs,
+      })
+      /* eslint-enable */
+    } catch (error) {
+      console.log(error)
     }
-
-    chrome.storage.local.set({
-      keyPairs: pairs,
-    })
-    /* eslint-enable */
-  } catch (error) {
-    localStorage.setItem('keyPairs', { accountName: privateKeys })
-    console.log(error)
+  } else {
+    localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKeys }))
   }
 }
 

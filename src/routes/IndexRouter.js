@@ -37,8 +37,9 @@ export default class IndexRouter extends React.Component {
           exact
           path='/logout'
           render={() => {
-            localStorage.clear()
-            window.location.replace('/')
+            localStorage.setItem('status', 'locked')
+            // window.location.replace('/')
+            window.location.reload()
           }}
         />
 

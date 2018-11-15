@@ -81,7 +81,11 @@ class App extends React.Component {
               }}
             >
               <Sidebar
-                sidebar={SidebarMenu}
+                sidebar={(
+                  <SidebarMenu
+                    account='sample-account-name'
+                  />
+                )}
                 open={this.state.open}
                 onSetOpen={this.toggleSidebar}
                 docked={this.state.docked}

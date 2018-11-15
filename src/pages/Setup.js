@@ -13,8 +13,9 @@ import {
   isExtension,
   isTabExist,
   newWindow,
-  setPassphrase,
   setKeyPairs,
+  setPassphrase,
+  setStatus,
 } from '../utils/chromeApi'
 import SetPasswordForm from '../components/SetPasswordForm'
 import SetKeyPairForm from '../components/SetKeyPairForm'
@@ -114,6 +115,8 @@ class Setup extends React.Component {
   done = () => {
     setPassphrase(this.state.password)
     setKeyPairs(this.state.account, this.state.privateKey)
+    setStatus('online')
+    window.location.replace('/index.html')
   }
 
   render() {
@@ -204,7 +207,10 @@ class Setup extends React.Component {
             && (
               <Button
                 type='primary'
-                onClick={() => message.success('Processing complete!')}
+                onClick={() => {
+                  message.success('Processing complete!')
+                  this.done()
+                }}
               >
                 Accept
               </Button>
