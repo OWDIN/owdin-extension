@@ -164,11 +164,7 @@ export function isTabExist() {
 }
 
 export function newWindow() {
-  if (isExtension()) {
-    chrome.tabs.create({ url: window.location.href })
-  } else {
-    window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
-  }
+  window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
 }
 
 export default version

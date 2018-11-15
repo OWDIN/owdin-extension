@@ -18,12 +18,12 @@ const AlertBox = styled(Alert)`
 `
 
 class SetPassword extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
-      password1: '',
-      password2: '',
+      password1: this.props.password || '',
+      password2: this.props.password || '',
       alertStatus: '',
       checkStatus: '',
       checkConfirmStatus: '',
@@ -70,7 +70,7 @@ class SetPassword extends React.Component {
             checkConfirmStatus: 'success',
             helpConfirmMessage: 'Confirmed!',
           }, () => {
-            this.props.setPassword(this.state.password1)
+            this.props.setPassword(this.state.password2)
             this.props.allowNext(true)
           })
         }
@@ -103,7 +103,7 @@ class SetPassword extends React.Component {
               type='password'
               id='password1'
               name='password1'
-              value={this.props.password || this.state.password1}
+              value={this.state.password1}
               placeholder='Password'
               onChange={e => this.handleChange(e)}
             />
@@ -120,7 +120,7 @@ class SetPassword extends React.Component {
               type='password'
               id='password2'
               name='password2'
-              value={this.props.password || this.state.password2}
+              value={this.state.password2}
               placeholder='Confirm Password'
               onChange={e => this.handleChange(e)}
             />
