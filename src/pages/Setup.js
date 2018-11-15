@@ -132,7 +132,7 @@ class Setup extends React.Component {
         />
       ),
     }, {
-      title: 'Import Account',
+      title: `Import Account${(this.state.account) ? ': ' + this.state.account : ''}`,
       description: 'Store your account securely',
       content: (
         <SetKeyPairForm
