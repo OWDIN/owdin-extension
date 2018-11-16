@@ -46,8 +46,6 @@ class SidebarMenu extends React.Component {
     const account = this.props.accountInfo.account_name
     const accountBalance = this.props.accountInfo.core_liquid_balance
 
-    console.log(this.props.accountInfo)
-
     return (
       <Div>
         <Div
