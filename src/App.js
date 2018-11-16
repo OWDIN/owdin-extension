@@ -12,7 +12,11 @@ import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import {
   getStatus,
+  getKeyPairs,
 } from './utils/chromeApi'
+import {
+  getAccountInfo,
+} from './utils/eosJsApi'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
 import IndexRouter from './routes/IndexRouter'
@@ -32,19 +36,35 @@ class App extends React.Component {
     this.state = {
       open: false,
       docked: mql.matches,
+      accountInfo: '',
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.resize.bind(this));
-    this.resize();
+  async componentDidMount() {
+    window.addEventListener('resize', this.resize.bind(this))
+    this.resize()
+
+    const account = Object.keys(await getKeyPairs())[0]
+    const accountInfo = await getAccountInfo(account)
+
+    this.setState({
+      accountInfo,
+    })
   }
 
   toggleSidebar = () => {
     const isOpen = this.state.open
-    this.setState({
-      open: !isOpen,
-    })
+    const isDocked = this.state.docked
+
+    if (window.innerWidth <= 576) {
+      this.setState({
+        open: !isOpen,
+      })
+    } else {
+      this.setState({
+        docked: !isDocked,
+      })
+    }
   }
 
   resize = () => {
@@ -83,7 +103,7 @@ class App extends React.Component {
               <Sidebar
                 sidebar={(
                   <SidebarMenu
-                    account='sample-account-name'
+                    accountInfo={this.state.accountInfo}
                   />
                 )}
                 open={this.state.open}
