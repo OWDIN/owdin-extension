@@ -43,6 +43,11 @@ margin-right: 10px;
 
 class SidebarMenu extends React.Component {
   render() {
+    const account = this.props.accountInfo.account_name
+    const accountBalance = this.props.accountInfo.core_liquid_balance
+
+    console.log(this.props.accountInfo)
+
     return (
       <Div>
         <Div
@@ -50,16 +55,16 @@ class SidebarMenu extends React.Component {
           padding='20px'
         >
           <Avatar
-            src={`https://avatars.dicebear.com/v2/identicon/${this.props.account}.svg`}
+            src={`https://avatars.dicebear.com/v2/identicon/${account}.svg`}
             shape='circle'
             size={52}
             icon='user'
           />
           <UpperDiv style={{ marginTop: '10px' }}>
-            <b>{this.props.account}</b>
+            <b>{account}</b>
           </UpperDiv>
           <UpperDiv>
-            1000 EOS
+            {accountBalance}
           </UpperDiv>
           <div>
             {/* <Tooltip placement='top' title='Copy address'>

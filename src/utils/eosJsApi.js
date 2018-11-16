@@ -54,4 +54,17 @@ export async function getAccountsByPubKey(publicKey) {
   return result
 }
 
+export async function getAccountInfo(account) {
+  let result = false
+
+  await eos.getAccount(account).then((resp) => {
+    result = resp
+    return result
+  }).catch((error) => {
+    console.log('ERR::getAccountInfo()', error)
+  })
+
+  return result
+}
+
 export default privToPub

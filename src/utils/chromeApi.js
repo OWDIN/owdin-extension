@@ -20,6 +20,9 @@ export const sample = {
   status: 'online', // online, offline, locked, unset
 }
 
+// TODO: Use Mobx Store
+let _storageData = null
+
 export function version() {
   try {
     /* eslint-disable */
@@ -140,24 +143,29 @@ export function isValidPassphrase(passphrase) {
   return false
 }
 
-export function getKeyPairs() {
-  let pairs = []
+async function _getStorageValue(item = null) {
+  const local = chrome.storage.local
+
+  local.get([item], (result) => {
+    _storageData = result[item]
+  })
+  await _storageData
+
+  return _storageData
+}
+
+export async function getKeyPairs() {
   if (isExtension()) {
     try {
-      /* eslint-disable */
-      chrome.storage.local.get('keyPairs', items => {
-        pairs = items
-      })
-      return pairs
-      /* eslint-enable */
+      _getStorageValue('keyPairs')
     } catch (error) {
       console.log(error)
     }
   } else {
-    return localStorage.getItem('keyPairs')
+    return JSON.parse(localStorage.getItem('keyPairs'))
   }
 
-  return false
+  return _storageData
 }
 
 /**
@@ -166,7 +174,7 @@ export function getKeyPairs() {
  * @param {string} accountName
  * @param {array} privateKeys
  */
-// NOTE: MUST BE IMPROVE
+// TODO: Encrypt Key Pairs
 export function setKeyPairs(accountName, privateKeys) {
   let pairs = []
   if (isExtension()) {
