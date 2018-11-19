@@ -3,6 +3,10 @@ import {
   NavLink,
 } from 'react-router-dom'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Avatar,
   Icon,
   Menu,
@@ -15,8 +19,12 @@ import {
 } from 'glamorous'
 import styled from 'styled-components'
 import {
+  getAccountList,
   newWindow,
 } from '../utils/chromeApi'
+import {
+  getAccountInfo,
+} from '../utils/eosJsApi'
 
 const UpperDiv = styled.div`
   margin-bottom: 10px;
@@ -41,10 +49,21 @@ const TitleIcon = styled(Icon)`
 margin-right: 10px;
 `
 
+@inject('accountInfoStore')
+@observer
 class SidebarMenu extends React.Component {
   render() {
-    const account = this.props.accountInfo.account_name
-    const accountBalance = this.props.accountInfo.core_liquid_balance
+    // const account = this.props.accountInfo.accountList || 'No Data'
+    // const accountBalance = this.props.accountInfo.core_liquid_balance || 'No Balance'
+    const account = getAccountList()[0] || 'No Data'
+    let accountInfo = 'No Data'
+    accountInfo = getAccountInfo(account)
+
+    console.log('[accountInfo]', accountInfo)
+    const accountBalance = accountInfo.core_liquid_balance || 'No Balance'
+
+    console.log('accountInfo.core_liquid_balance', accountInfo.core_liquid_balance)
+    console.log('MobX::accountInfoStore', this.props.accountInfoStore)
 
     return (
       <Div>

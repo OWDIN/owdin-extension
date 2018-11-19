@@ -1,7 +1,10 @@
 /* global chrome */
 /**
- * Chrome API Specification
+ * Chrome API Wrapper
  */
+import AccountInfoStore from '../stores/AccountInfoStore'
+
+const accountInfoStore = new AccountInfoStore()
 
 export const sample = {
   version: '0.0.x',
@@ -50,42 +53,48 @@ export function isExtension() {
 }
 
 export function getStatus() {
-  if (isExtension()) {
-    try {
+  try {
+    if (isExtension()) {
       /* eslint-disable */
-      chrome.storage.local.get('status', result => {
-        return result
+      chrome.storage.local.get('status', item => {
+        if (item.status !== accountInfoStore.status && JSON.stringify(item) !== '{}') {
+          accountInfoStore.status = item.status
+        }
       })
       /* eslint-enable */
-    } catch (error) {
-      throw error
+    } else {
+      return localStorage.getItem('status') || 'unset'
     }
+  } catch (error) {
+    throw error
   }
 
   // for test
-  return localStorage.getItem('status') || 'unset'
+  return accountInfoStore.status
 }
 
 export function setStatus(status) {
-  if (isExtension()) {
-    try {
+  try {
+    if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.set({
         status,
       })
       /* eslint-enable */
-    } catch (error) {
-      throw error
+    } else {
+      // for test
+      localStorage.setItem('status', status)
     }
+  } catch (error) {
+    throw error
   }
 
-  // for test
-  localStorage.setItem('status', status)
+  accountInfoStore.status = status
 }
 
 export function setPassphrase(passphrase) {
-  if (isExtension()) {
-    try {
+  try {
+    if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.set({
         authenticate: {
@@ -93,11 +102,11 @@ export function setPassphrase(passphrase) {
         },
       })
       /* eslint-enable */
-    } catch (error) {
-      throw error
+    } else {
+      localStorage.setItem('passphrase', passphrase)
     }
-  } else {
-    localStorage.setItem('passphrase', passphrase)
+  } catch (error) {
+    throw error
   }
 }
 
@@ -106,43 +115,33 @@ export function getPassphrase() {
     /* eslint-disable */
     if (isExtension()) {
       chrome.storage.local.get('authenticate', items => {
-        return items.passphrase
+        accountInfoStore.setPassphrase(items.authenticate.passphrase)
       })
     } else {
-      return localStorage.getItem('passphrase')
+      accountInfoStore.setPassphrase(localStorage.getItem('passphrase'))
     }
     /* eslint-enable */
-  } catch (error) {
-    // console.log(error)
-  }
-
-  return false
-}
-
-export function isValidPassphrase(passphrase) {
-  try {
-    if (isExtension()) {
-      /* eslint-disable */
-      chrome.storage.local.get('authenticate', items => {
-        if (items.passphrase === passphrase) {
-          setStatus('online')
-          return true
-        }
-      })
-      /* eslint-enable */
-    }
   } catch (error) {
     console.log(error)
   }
 
-  if (localStorage.getItem('passphrase') === passphrase) {
-    setStatus('online')
+  return accountInfoStore.passphrase
+}
+
+export function isValidPassphrase(passphrase) {
+  const storePassphrase = getPassphrase()
+  if (storePassphrase === passphrase) {
     return true
   }
+  console.log(storePassphrase, passphrase)
 
   return false
 }
 
+/**
+ * TODO: Wrapping up for Multiple Browser Storage
+ * Get browser storage data
+ */
 async function _getStorageValue(item = null) {
   const local = chrome.storage.local
 
@@ -155,21 +154,21 @@ async function _getStorageValue(item = null) {
 }
 
 export async function getKeyPairs() {
-  if (isExtension()) {
-    try {
+  try {
+    if (isExtension()) {
       _getStorageValue('keyPairs')
-    } catch (error) {
-      console.log(error)
+    } else {
+      return JSON.parse(localStorage.getItem('keyPairs'))
     }
-  } else {
-    return JSON.parse(localStorage.getItem('keyPairs'))
+  } catch (error) {
+    console.log(error)
   }
 
   return _storageData
 }
 
 /**
- * set account and private keys
+ * Set account and private keys
  *
  * @param {string} accountName
  * @param {array} privateKeys
@@ -181,7 +180,7 @@ export function setKeyPairs(accountName, privateKeys) {
     try {
       /* eslint-disable */
       chrome.storage.local.get('keyPairs', items => {
-        pairs = items
+        pairs = items.keyPairs
       })
 
       pairs = {
@@ -199,6 +198,26 @@ export function setKeyPairs(accountName, privateKeys) {
   } else {
     localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKeys }))
   }
+}
+
+export function getAccountList() {
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.get('keyPairs', items => {
+        accountInfoStore.accountList = Object.keys(items.keyPairs)
+      })
+      /* eslint-enable */
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  } else {
+    // for test
+    accountInfoStore.accountList = Object.keys(JSON.parse(localStorage.getItem('keyPairs')))
+  }
+
+  return accountInfoStore.accountList
 }
 
 export function isLoggedIn() {

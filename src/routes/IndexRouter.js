@@ -8,6 +8,9 @@ import {
   Div,
 } from 'glamorous'
 import history from '../utils/history'
+import {
+  setStatus,
+} from '../utils/chromeApi'
 import Dashboard from '../pages/Dashboard'
 
 const Error404 = ({ location }) => (
@@ -19,10 +22,6 @@ const Error404 = ({ location }) => (
 )
 
 export default class IndexRouter extends React.Component {
-  signout = () => {
-    localStorage.clear()
-  }
-
   render() {
     return (
       <Switch history={history}>
@@ -37,9 +36,12 @@ export default class IndexRouter extends React.Component {
           exact
           path='/logout'
           render={() => {
-            localStorage.setItem('status', 'locked')
-            // window.location.replace('/')
-            window.location.reload()
+            setStatus('locked')
+            setTimeout(() => {
+              window.location.replace('/index.html')
+            }, 100)
+            // window.location.reload()
+            return <Redirect to='/' />
           }}
         />
 

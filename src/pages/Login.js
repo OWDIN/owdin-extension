@@ -4,6 +4,7 @@ import {
   Form,
   Icon,
   Input,
+  message,
 } from 'antd'
 import {
   Div,
@@ -11,15 +12,16 @@ import {
   Img,
 } from 'glamorous'
 import {
-  version,
   isLoggedIn,
   isValidPassphrase,
+  newWindow,
+  setStatus,
 } from '../utils/chromeApi'
 import AppIcon from '../assets/img/owdin-bi-color.svg'
 
 const FormItem = Form.Item
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor() {
     super()
 
@@ -30,10 +32,12 @@ export default class Login extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
+    const isValid = isValidPassphrase(this.state.passphrase)
 
-    version()
-    if (isValidPassphrase(this.state.passphrase)) {
-      window.location.replace('/index.html')
+    if (isValid) {
+      setStatus('online')
+    } else {
+      message.error('Invalid passphrase. Try Again.')
     }
 
     this.setState({
@@ -77,11 +81,15 @@ export default class Login extends React.Component {
           >
             OWDIN Wallet
           </H1>
+          <span id='open-popup' role='presentation' onClick={() => newWindow()}>
+            {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
+            <span>Open in a new Popup Window</span>
+            {/* </a> */}
+          </span>
         </Div>
         <Div>
           <Form
             onSubmit={this.onSubmit}
-            // onClick={this.handleLogin}
             style={{
               width: '280px',
               margin: '0 auto',
@@ -117,3 +125,5 @@ export default class Login extends React.Component {
     )
   }
 }
+
+export default Login

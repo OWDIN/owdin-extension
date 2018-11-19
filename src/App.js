@@ -5,18 +5,18 @@ import {
   Route,
 } from 'react-router-dom'
 import {
+  Provider,
+  observer,
+} from 'mobx-react'
+import {
   Layout,
 } from 'antd'
 import Sidebar from 'react-sidebar'
-// import Clipboard from 'react-clipboard.js'
 import history from './utils/history'
+import AccountInfoStore from './stores/AccountInfoStore'
 import {
   getStatus,
-  getKeyPairs,
 } from './utils/chromeApi'
-import {
-  getAccountInfo,
-} from './utils/eosJsApi'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
 import IndexRouter from './routes/IndexRouter'
@@ -24,32 +24,28 @@ import Login from './pages/Login'
 import Setup from './pages/Setup'
 import './assets/css/layout.less'
 
+const accountInfoStore = new AccountInfoStore()
+
 const {
   Content,
 } = Layout
 
 const mql = window.matchMedia('(min-width: 576px)')
 
+@observer
 class App extends React.Component {
   constructor() {
     super()
+
     this.state = {
       open: false,
       docked: mql.matches,
-      accountInfo: '',
     }
   }
 
   async componentDidMount() {
     window.addEventListener('resize', this.resize.bind(this))
     this.resize()
-
-    const account = Object.keys(await getKeyPairs())[0]
-    const accountInfo = await getAccountInfo(account)
-
-    this.setState({
-      accountInfo,
-    })
   }
 
   toggleSidebar = () => {
@@ -87,51 +83,56 @@ class App extends React.Component {
     }
   }
 
+  componentDidCatch(error, info) {
+    console.log(error, info)
+  }
+
   render() {
+    console.log('[ App::render() ]')
     const status = getStatus()
 
     switch (status) {
       case 'online':
       case 'offline':
         return (
-          <HashRouter>
-            <Layout
-              style={{
-                minHeight: '100vh',
-              }}
-            >
-              <Sidebar
-                sidebar={(
-                  <SidebarMenu
-                    accountInfo={this.state.accountInfo}
-                  />
-                )}
-                open={this.state.open}
-                onSetOpen={this.toggleSidebar}
-                docked={this.state.docked}
-                styles={{
-                  sidebar: {
-                    background: 'white',
-                    width: '220px',
-                  },
+          <Provider accountInfoStore={accountInfoStore}>
+            <HashRouter>
+              <Layout
+                style={{
+                  minHeight: '100vh',
                 }}
               >
-                <Header
+                <Sidebar
+                  sidebar={(
+                    <SidebarMenu />
+                  )}
                   open={this.state.open}
-                  toggle={this.toggleSidebar}
-                />
-                <Content>
-                  <IndexRouter />
-                </Content>
-              </Sidebar>
-            </Layout>
-          </HashRouter>
+                  onSetOpen={this.toggleSidebar}
+                  docked={this.state.docked}
+                  styles={{
+                    sidebar: {
+                      background: 'white',
+                      width: '220px',
+                    },
+                  }}
+                >
+                  <Header
+                    open={this.state.open}
+                    toggle={this.toggleSidebar}
+                  />
+                  <Content>
+                    <IndexRouter />
+                  </Content>
+                </Sidebar>
+              </Layout>
+            </HashRouter>
+          </Provider>
         )
       case 'locked':
         return (
           <HashRouter>
             <Switch history={history}>
-              <Route component={Login} />
+              <Route render={() => <Login />} />
             </Switch>
           </HashRouter>
         )
