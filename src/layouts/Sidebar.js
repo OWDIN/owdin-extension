@@ -22,9 +22,6 @@ import {
   getAccountList,
   newWindow,
 } from '../utils/chromeApi'
-import {
-  getAccountInfo,
-} from '../utils/eosJsApi'
 
 const UpperDiv = styled.div`
   margin-bottom: 10px;
@@ -52,18 +49,24 @@ margin-right: 10px;
 @inject('accountInfoStore')
 @observer
 class SidebarMenu extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.accountInfoStore = this.props.accountInfoStore || {}
+    this.account = getAccountList()[0] || 'No Data'
+    this.accountInfoStore.setAccountInfo(this.account)
+    this.accountInfo = this.accountInfoStore.accountInfo
+  }
+
   render() {
-    // const account = this.props.accountInfo.accountList || 'No Data'
-    // const accountBalance = this.props.accountInfo.core_liquid_balance || 'No Balance'
-    const account = getAccountList()[0] || 'No Data'
-    let accountInfo = 'No Data'
-    accountInfo = getAccountInfo(account)
+    console.log('[ SidebarMenu::render() ]');
 
-    console.log('[accountInfo]', accountInfo)
-    const accountBalance = accountInfo.core_liquid_balance || 'No Balance'
+    // const accountInfoStore = this.props.accountInfoStore || {}
+    // console.log('accountInfoStore', accountInfoStore)
 
-    console.log('accountInfo.core_liquid_balance', accountInfo.core_liquid_balance)
-    console.log('MobX::accountInfoStore', this.props.accountInfoStore)
+    // const accountBalance = accountInfoStore.accountInfo || 'No Balance'
+    const accountBalance = this.accountInfo
+    console.log('accountBalance', typeof accountBalance, accountBalance)
 
     return (
       <Div>
@@ -72,16 +75,16 @@ class SidebarMenu extends React.Component {
           padding='20px'
         >
           <Avatar
-            src={`https://avatars.dicebear.com/v2/identicon/${account}.svg`}
+            src={`https://avatars.dicebear.com/v2/identicon/${this.account}.svg`}
             shape='circle'
             size={52}
             icon='user'
           />
           <UpperDiv style={{ marginTop: '10px' }}>
-            <b>{account}</b>
+            <b>{this.account}</b>
           </UpperDiv>
           <UpperDiv>
-            {accountBalance}
+            {/* {accountBalance} */}
           </UpperDiv>
           <div>
             {/* <Tooltip placement='top' title='Copy address'>

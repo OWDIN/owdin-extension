@@ -2,9 +2,7 @@
 /**
  * Chrome API Wrapper
  */
-import AccountInfoStore from '../stores/AccountInfoStore'
-
-const accountInfoStore = new AccountInfoStore()
+import { accountInfoStore } from '../stores/AccountInfoStore'
 
 export const sample = {
   version: '0.0.x',
@@ -58,7 +56,7 @@ export function getStatus() {
       /* eslint-disable */
       chrome.storage.local.get('status', item => {
         if (item.status !== accountInfoStore.status && JSON.stringify(item) !== '{}') {
-          accountInfoStore.status = item.status
+          accountInfoStore.setStatus(item.status)
         }
       })
       /* eslint-enable */
@@ -89,7 +87,7 @@ export function setStatus(status) {
     throw error
   }
 
-  accountInfoStore.status = status
+  accountInfoStore.setStatus(status)
 }
 
 export function setPassphrase(passphrase) {
@@ -205,7 +203,7 @@ export function getAccountList() {
     try {
       /* eslint-disable */
       chrome.storage.local.get('keyPairs', items => {
-        accountInfoStore.accountList = Object.keys(items.keyPairs)
+        accountInfoStore.setAccountList(Object.keys(items.keyPairs))
       })
       /* eslint-enable */
     } catch (error) {
@@ -214,7 +212,7 @@ export function getAccountList() {
     }
   } else {
     // for test
-    accountInfoStore.accountList = Object.keys(JSON.parse(localStorage.getItem('keyPairs')))
+    accountInfoStore.setAccountList(Object.keys(JSON.parse(localStorage.getItem('keyPairs'))))
   }
 
   return accountInfoStore.accountList

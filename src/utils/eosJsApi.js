@@ -12,15 +12,14 @@ const eosOption = {
   // https://api.eosnewyork.io/v1/chain/get_info
   // httpEndpoint: 'https://api.eosnewyork.io',
   httpEndpoint: 'https://eos-kr.owdin.network:8888', // default, null for cold-storage
-  // verbose: true, // API logging
-  verbose: false, // API logging
+  verbose: true, // API logging
   // logger: { // Default logging functions
   //   log: config.verbose ? console.log : null,
   //   error: config.verbose ? console.error : null,
   // },
   fetchConfiguration: {},
 }
-const eos = EosApi(eosOption)
+export const eos = EosApi(eosOption)
 
 // const rpc = new JsonRpc('https://eos.owdin.network:8888')
 // const signatureProvider = new JsSignatureProvider([defaultPrivKey])
@@ -47,28 +46,26 @@ export async function getAccountsByPubKey(publicKey) {
 
   await eos.getKeyAccounts(publicKey).then((resp) => {
     result = resp.account_names
-    return result
   }).catch((error) => {
-    console.log('ERR::getAccountByPrivKey()', error)
+    console.log('ERR::eosJsApi::getAccountByPrivKey()', error)
   })
 
   return result
 }
 
-export async function getAccountInfo(account) {
-  let result = false
+// export function getAccountInfo(account) {
+//   let data = ''
 
-  try {
-    result = await eos.getAccount(account).then((resp) => {
-      result = resp
-    }).catch((error) => {
-      console.log('ERR::getAccountInfo()', error)
-    })
-  } catch (error) {
-    console.log('ERR::getAccountInfo()', error)
-  }
+//   try {
+//     eos.getAccount(account).then((resp) => {
+//       data = resp
+//     })
+//   } catch (error) {
+//     console.log(error)
+//   }
 
-  return result
-}
+//   console.log('LOG::eosJsApi::getAccountInfo()', data)
+//   return data
+// }
 
-export default privToPub
+export default eos

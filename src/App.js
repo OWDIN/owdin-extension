@@ -13,7 +13,9 @@ import {
 } from 'antd'
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
-import AccountInfoStore from './stores/AccountInfoStore'
+import {
+  accountInfoStore,
+} from './stores/AccountInfoStore'
 import {
   getStatus,
 } from './utils/chromeApi'
@@ -23,8 +25,6 @@ import IndexRouter from './routes/IndexRouter'
 import Login from './pages/Login'
 import Setup from './pages/Setup'
 import './assets/css/layout.less'
-
-const accountInfoStore = new AccountInfoStore()
 
 const {
   Content,
