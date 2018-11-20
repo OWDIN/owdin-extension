@@ -4,6 +4,10 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './assets/css/index.less'
 
+if (process.env.NODE_ENV !== 'production') {
+  localStorage.setItem('debug', 'owdin-wallet:*')
+}
+
 ReactDOM.render(<App />, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change

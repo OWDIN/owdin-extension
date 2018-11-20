@@ -1,12 +1,14 @@
 import {
   action,
   observable,
-  runInAction,
+  // runInAction,
+  spy,
 } from 'mobx'
 import {
   // getAccountInfo,
   eos,
 } from '../utils/eosJsApi'
+import Log from '../utils/debugLog'
 
 class AccountStore {
   @observable
@@ -21,38 +23,41 @@ class AccountStore {
   @observable
   status = 'unset'
 
-  @action('set account list belong to public key')
+  @action
   setAccountList = (data) => {
     this.accountList = data
   }
 
-  @action('set account information')
+  @action
   setAccountInfo = async (account) => {
     try {
-      // const resp = await eos.getAccount(account)
       await eos.getAccount(account, (error, result) => {
-        console.log('callback', error, result)
         this.accountInfo = result
-      })
-
-      runInAction('Update Account Info', () => {
-        // this.accountInfo = resp
+        if (error) {
+          Log.error('eos.getAccount()', error)
+        }
       })
     } catch (error) {
-      console.log(error)
+      Log.error('setAccountInfo()', error)
     }
   }
 
-  @action('set passphrase')
+  @action
   setPassphrase = (data) => {
     this.passphrase = data
   }
 
-  @action('set state')
+  @action
   setStatus = (data) => {
     this.status = data
   }
 }
+
+spy((event) => {
+  if (event.type === 'action') {
+    Log.info('MobX::AccountStore', `${event.name} with args: ${event.arguments}`)
+  }
+})
 
 export const accountStore = new AccountStore()
 

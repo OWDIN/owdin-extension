@@ -22,6 +22,7 @@ import {
   getAccountList,
   newWindow,
 } from '../utils/chromeApi'
+import Log from '../utils/debugLog'
 
 const UpperDiv = styled.div`
   margin-bottom: 10px;
@@ -59,7 +60,7 @@ class SidebarMenu extends React.Component {
   }
 
   render() {
-    console.log('[ SidebarMenu::render() ]')
+    Log.info('Sidebar', 'render()')
 
     const accountBalance = this.accountStore.accountInfo.core_liquid_balance || 'No Data'
 

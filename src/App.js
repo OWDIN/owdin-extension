@@ -19,6 +19,7 @@ import {
 import {
   getStatus,
 } from './utils/chromeApi'
+import Log from './utils/debugLog'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
 import IndexRouter from './routes/IndexRouter'
@@ -84,11 +85,11 @@ class App extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.log(error, info)
+    Log.error(error, info)
   }
 
   render() {
-    console.log('[ App::render() ]')
+    Log.info('App', 'render()')
     const status = getStatus()
 
     switch (status) {
