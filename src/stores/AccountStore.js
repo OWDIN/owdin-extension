@@ -8,7 +8,7 @@ import {
   eos,
 } from '../utils/eosJsApi'
 
-class AccountInfoStore {
+class AccountStore {
   @observable
   accountList = []
 
@@ -21,40 +21,39 @@ class AccountInfoStore {
   @observable
   status = 'unset'
 
-  @action
+  @action('set account list belong to public key')
   setAccountList = (data) => {
     this.accountList = data
   }
 
-  @action
+  @action('set account information')
   setAccountInfo = async (account) => {
-    // const accountInfo = await getAccountInfo(account)
-
-    let data = 'zzzz'
     try {
-      await eos.getAccount(account, (resp) => {
-        data = resp
+      // const resp = await eos.getAccount(account)
+      await eos.getAccount(account, (error, result) => {
+        console.log('callback', error, result)
+        this.accountInfo = result
+      })
+
+      runInAction('Update Account Info', () => {
+        // this.accountInfo = resp
       })
     } catch (error) {
       console.log(error)
     }
-
-    runInAction('Update Account Info', () => {
-      this.accountInfo = data
-    })
   }
 
-  @action
+  @action('set passphrase')
   setPassphrase = (data) => {
     this.passphrase = data
   }
 
-  @action
+  @action('set state')
   setStatus = (data) => {
     this.status = data
   }
 }
 
-export const accountInfoStore = new AccountInfoStore()
+export const accountStore = new AccountStore()
 
-export default accountInfoStore
+export default accountStore

@@ -46,27 +46,22 @@ const TitleIcon = styled(Icon)`
 margin-right: 10px;
 `
 
-@inject('accountInfoStore')
+@inject('accountStore')
 @observer
 class SidebarMenu extends React.Component {
   constructor(props) {
     super(props)
 
-    this.accountInfoStore = this.props.accountInfoStore || {}
+    this.accountStore = this.props.accountStore || {}
     this.account = getAccountList()[0] || 'No Data'
-    this.accountInfoStore.setAccountInfo(this.account)
-    this.accountInfo = this.accountInfoStore.accountInfo
+    this.accountStore.setAccountInfo(this.account)
+    this.accountInfo = this.accountStore.accountInfo
   }
 
   render() {
-    console.log('[ SidebarMenu::render() ]');
+    console.log('[ SidebarMenu::render() ]')
 
-    // const accountInfoStore = this.props.accountInfoStore || {}
-    // console.log('accountInfoStore', accountInfoStore)
-
-    // const accountBalance = accountInfoStore.accountInfo || 'No Balance'
-    const accountBalance = this.accountInfo
-    console.log('accountBalance', typeof accountBalance, accountBalance)
+    const accountBalance = this.accountStore.accountInfo.core_liquid_balance || 'No Data'
 
     return (
       <Div>
@@ -84,7 +79,7 @@ class SidebarMenu extends React.Component {
             <b>{this.account}</b>
           </UpperDiv>
           <UpperDiv>
-            {/* {accountBalance} */}
+            {accountBalance}
           </UpperDiv>
           <div>
             {/* <Tooltip placement='top' title='Copy address'>

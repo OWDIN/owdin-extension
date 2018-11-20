@@ -14,8 +14,8 @@ import {
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import {
-  accountInfoStore,
-} from './stores/AccountInfoStore'
+  accountStore,
+} from './stores/AccountStore'
 import {
   getStatus,
 } from './utils/chromeApi'
@@ -95,7 +95,7 @@ class App extends React.Component {
       case 'online':
       case 'offline':
         return (
-          <Provider accountInfoStore={accountInfoStore}>
+          <Provider accountStore={accountStore}>
             <HashRouter>
               <Layout
                 style={{

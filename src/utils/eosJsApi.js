@@ -12,7 +12,7 @@ const eosOption = {
   // https://api.eosnewyork.io/v1/chain/get_info
   // httpEndpoint: 'https://api.eosnewyork.io',
   httpEndpoint: 'https://eos-kr.owdin.network:8888', // default, null for cold-storage
-  verbose: true, // API logging
+  verbose: false, // API logging
   // logger: { // Default logging functions
   //   log: config.verbose ? console.log : null,
   //   error: config.verbose ? console.error : null,

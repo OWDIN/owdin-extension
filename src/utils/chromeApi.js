@@ -2,7 +2,7 @@
 /**
  * Chrome API Wrapper
  */
-import { accountInfoStore } from '../stores/AccountInfoStore'
+import { accountStore } from '../stores/AccountStore'
 
 export const sample = {
   version: '0.0.x',
@@ -55,8 +55,8 @@ export function getStatus() {
     if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.get('status', item => {
-        if (item.status !== accountInfoStore.status && JSON.stringify(item) !== '{}') {
-          accountInfoStore.setStatus(item.status)
+        if (item.status !== accountStore.status && JSON.stringify(item) !== '{}') {
+          accountStore.setStatus(item.status)
         }
       })
       /* eslint-enable */
@@ -68,7 +68,7 @@ export function getStatus() {
   }
 
   // for test
-  return accountInfoStore.status
+  return accountStore.status
 }
 
 export function setStatus(status) {
@@ -87,7 +87,7 @@ export function setStatus(status) {
     throw error
   }
 
-  accountInfoStore.setStatus(status)
+  accountStore.setStatus(status)
 }
 
 export function setPassphrase(passphrase) {
@@ -113,17 +113,17 @@ export function getPassphrase() {
     /* eslint-disable */
     if (isExtension()) {
       chrome.storage.local.get('authenticate', items => {
-        accountInfoStore.setPassphrase(items.authenticate.passphrase)
+        accountStore.setPassphrase(items.authenticate.passphrase)
       })
     } else {
-      accountInfoStore.setPassphrase(localStorage.getItem('passphrase'))
+      accountStore.setPassphrase(localStorage.getItem('passphrase'))
     }
     /* eslint-enable */
   } catch (error) {
     console.log(error)
   }
 
-  return accountInfoStore.passphrase
+  return accountStore.passphrase
 }
 
 export function isValidPassphrase(passphrase) {
@@ -203,7 +203,7 @@ export function getAccountList() {
     try {
       /* eslint-disable */
       chrome.storage.local.get('keyPairs', items => {
-        accountInfoStore.setAccountList(Object.keys(items.keyPairs))
+        accountStore.setAccountList(Object.keys(items.keyPairs))
       })
       /* eslint-enable */
     } catch (error) {
@@ -212,10 +212,10 @@ export function getAccountList() {
     }
   } else {
     // for test
-    accountInfoStore.setAccountList(Object.keys(JSON.parse(localStorage.getItem('keyPairs'))))
+    accountStore.setAccountList(Object.keys(JSON.parse(localStorage.getItem('keyPairs'))))
   }
 
-  return accountInfoStore.accountList
+  return accountStore.accountList
 }
 
 export function isLoggedIn() {
