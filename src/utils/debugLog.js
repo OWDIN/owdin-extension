@@ -18,7 +18,7 @@ class Log {
     createDebug.color = COLORS[level]
 
     if (source) {
-      createDebug(source, message)
+      createDebug(message, source)
     } else {
       createDebug(message)
     }

@@ -6,10 +6,19 @@ import {
 } from 'antd'
 import {
   Div,
-  H1,
+  // H1,
 } from 'glamorous'
+import { accountStore } from '../stores/AccountStore'
 
 const HeaderWrapper = Layout.Header
+
+const status = {
+  'online': 'success',
+  'offline': 'error',
+  'warning': 'warning',
+  'processing': 'processing',
+  'unset': 'default',
+}
 
 const Header = (props) => {
   return (
@@ -30,11 +39,11 @@ const Header = (props) => {
       <Div
         display='inline'
       >
-        <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1>
+        {/* <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1> */}
       </Div>
       <Badge
-        status='success'
-        text='Test Network'
+        status={status[accountStore.status]}
+        text={accountStore.network}
         style={{
           float: 'right',
           padding: '0 20px',

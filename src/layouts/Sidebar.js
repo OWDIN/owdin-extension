@@ -62,7 +62,12 @@ class SidebarMenu extends React.Component {
   render() {
     Log.info('Sidebar', 'render()')
 
-    const accountBalance = this.accountStore.accountInfo.core_liquid_balance || 'No Data'
+    let accountBalance = 'No Data'
+    try {
+      accountBalance = this.accountStore.accountInfo.core_liquid_balance
+    } catch (error) {
+      Log.error('this.accountStore.accountInfo.core_liquid_balance')
+    }
 
     return (
       <Div>

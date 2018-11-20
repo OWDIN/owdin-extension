@@ -23,6 +23,9 @@ class AccountStore {
   @observable
   status = 'unset'
 
+  @observable
+  network = 'OWDIN TestNet'
+
   @action
   setAccountList = (data) => {
     this.accountList = data
@@ -53,12 +56,13 @@ class AccountStore {
   }
 }
 
+export const accountStore = new AccountStore()
+
 spy((event) => {
   if (event.type === 'action') {
     Log.info('MobX::AccountStore', `${event.name} with args: ${event.arguments}`)
+    Log.info('MobX::AccountStore', accountStore)
   }
 })
-
-export const accountStore = new AccountStore()
 
 export default accountStore
