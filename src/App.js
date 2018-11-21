@@ -22,6 +22,7 @@ import {
 import Log from './utils/debugLog'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
+import Footer from './layouts/Footer'
 import IndexRouter from './routes/IndexRouter'
 import Login from './pages/Login'
 import Setup from './pages/Setup'
@@ -120,10 +121,13 @@ class App extends React.Component {
                   <Header
                     open={this.state.open}
                     toggle={this.toggleSidebar}
+                    status={accountStore.status}
+                    network={accountStore.network}
                   />
                   <Content>
                     <IndexRouter />
                   </Content>
+                  <Footer />
                 </Sidebar>
               </Layout>
             </HashRouter>

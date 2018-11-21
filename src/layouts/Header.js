@@ -8,7 +8,7 @@ import {
   Div,
   // H1,
 } from 'glamorous'
-import { accountStore } from '../stores/AccountStore'
+// import { accountStore } from '../stores/AccountStore'
 
 const HeaderWrapper = Layout.Header
 
@@ -42,8 +42,8 @@ const Header = (props) => {
         {/* <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1> */}
       </Div>
       <Badge
-        status={status[accountStore.status]}
-        text={accountStore.network}
+        status={status[props.status]}
+        text={props.network}
         style={{
           float: 'right',
           padding: '0 20px',
