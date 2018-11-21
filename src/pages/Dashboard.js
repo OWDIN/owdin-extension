@@ -12,6 +12,11 @@ const FlexRow = styled(Row)`
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+
+  @media (max-width: 700px) {
+    max-width: 100%;
+    margin: 0 auto !important;
+  }
 `
 const FlexCol = styled(Col)`
   width: 100%;
