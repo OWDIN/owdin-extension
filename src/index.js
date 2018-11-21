@@ -4,9 +4,12 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import './assets/css/index.less'
 
-if (process.env.NODE_ENV !== 'production') {
-  localStorage.setItem('debug', 'owdin-wallet:*')
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   localStorage.setItem('debug', 'owdin-wallet:*')
+// }
+
+// live debug mode
+localStorage.setItem('debug', 'owdin-wallet:*')
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

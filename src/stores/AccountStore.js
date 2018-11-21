@@ -37,15 +37,19 @@ class AccountStore {
 
   @action
   setAccountInfo = async (account) => {
-    try {
-      await eos.getAccount(account, (error, result) => {
-        this.accountInfo = result
-        if (error) {
-          Log.error('eos.getAccount()', error)
-        }
-      })
-    } catch (error) {
-      Log.error('setAccountInfo()', error)
+    if (account) {
+      try {
+        await eos.getAccount(account, (error, result) => {
+          this.accountInfo = result
+          if (error) {
+            Log.error('eos.getAccount()', error)
+          }
+        })
+      } catch (error) {
+        Log.error('setAccountInfo()', error)
+      }
+    } else {
+      Log.warn('MobX::AccountStore::setAccountInfo()', 'Loading account...')
     }
   }
 

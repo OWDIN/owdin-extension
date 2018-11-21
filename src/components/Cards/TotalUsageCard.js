@@ -73,16 +73,8 @@ const SubData = styled.span`
 @inject('accountStore')
 @observer
 class CardTemplate extends React.Component {
-  // constructor(props) {
-  //   super(props)
-  // }
-
   render() {
     const { accountStore } = this.props
-    // const cpuAvailable = accountStore.accountInfo.cpu_limit.available || ''
-    // const cpuMax = accountStore.accountInfo.cpu_limit.max || ''
-    // const cpuUsed = accountStore.accountInfo.cpu_limit.used || ''
-    // console.log(accountStore.accountInfo.account_name)
 
     // get cpu usage
     let cpuLimit = null
@@ -90,7 +82,6 @@ class CardTemplate extends React.Component {
     if (accountStore.accountInfo.cpu_limit) {
       cpuLimit = accountStore.accountInfo.cpu_limit
       loading = false
-      console.log(JSON.stringify(cpuLimit))
     } else {
       cpuLimit = {
         'available': 0,
@@ -103,7 +94,6 @@ class CardTemplate extends React.Component {
     let netLimit = null
     if (accountStore.accountInfo.net_limit) {
       netLimit = accountStore.accountInfo.net_limit
-      console.log(JSON.stringify(netLimit))
     } else {
       netLimit = {
         'available': 0,
@@ -120,7 +110,6 @@ class CardTemplate extends React.Component {
         used: accountStore.accountInfo.ram_usage,
         available: accountStore.accountInfo.ram_quota - accountStore.accountInfo.ram_usage,
       }
-      console.log(JSON.stringify(ramLimit))
     } else {
       ramLimit = {
         'available': 0,

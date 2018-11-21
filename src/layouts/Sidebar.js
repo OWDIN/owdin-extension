@@ -54,7 +54,7 @@ class SidebarMenu extends React.Component {
     super(props)
 
     this.accountStore = this.props.accountStore || {}
-    this.account = getAccountList()[0] || 'No Data'
+    this.account = getAccountList()[0] || ''
     this.accountStore.setAccountInfo(this.account)
     this.accountInfo = this.accountStore.accountInfo
   }
@@ -62,7 +62,7 @@ class SidebarMenu extends React.Component {
   render() {
     Log.info('Sidebar', 'render()')
 
-    let accountBalance = 'No Data'
+    let accountBalance = ''
     try {
       accountBalance = this.accountStore.accountInfo.core_liquid_balance
     } catch (error) {
