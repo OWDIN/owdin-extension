@@ -17,6 +17,7 @@ import {
   accountStore,
 } from './stores/AccountStore'
 import {
+  getAccountList,
   getStatus,
 } from './utils/chromeApi'
 import Log from './utils/debugLog'
@@ -38,6 +39,8 @@ const mql = window.matchMedia('(min-width: 576px)')
 class App extends React.Component {
   constructor() {
     super()
+
+    getAccountList()
 
     this.state = {
       open: false,

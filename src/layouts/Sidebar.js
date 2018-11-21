@@ -19,7 +19,6 @@ import {
 } from 'glamorous'
 import styled from 'styled-components'
 import {
-  getAccountList,
   newWindow,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
@@ -53,7 +52,6 @@ class SidebarMenu extends React.Component {
   constructor(props) {
     super(props)
 
-    getAccountList()
     this.accountStore = this.props.accountStore || {}
     this.account = this.accountStore.currentAccount
     this.accountStore.setAccountInfo(this.account)
