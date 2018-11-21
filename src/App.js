@@ -135,11 +135,13 @@ class App extends React.Component {
         )
       case 'locked':
         return (
-          <HashRouter>
-            <Switch history={history}>
-              <Route render={() => <Login />} />
-            </Switch>
-          </HashRouter>
+          <Provider accountStore={accountStore}>
+            <HashRouter>
+              <Switch history={history}>
+                <Route render={() => <Login />} />
+              </Switch>
+            </HashRouter>
+          </Provider>
         )
       default:
         break;

@@ -8,7 +8,6 @@ import {
   Div,
   // H1,
 } from 'glamorous'
-// import { accountStore } from '../stores/AccountStore'
 
 const HeaderWrapper = Layout.Header
 

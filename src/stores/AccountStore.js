@@ -15,6 +15,9 @@ class AccountStore {
   accountList = []
 
   @observable
+  currentAccount = ''
+
+  @observable
   accountInfo = {}
 
   @observable
@@ -29,6 +32,7 @@ class AccountStore {
   @action
   setAccountList = (data) => {
     this.accountList = data
+    this.currentAccount = data[0]
   }
 
   @action
@@ -53,6 +57,18 @@ class AccountStore {
   @action
   setStatus = (data) => {
     this.status = data
+  }
+
+  @action
+  setNetwork = (text) => {
+    this.network = text
+  }
+
+  constructor() {
+    setInterval(() => {
+      Log.info('MobX::AccountStore', 'setInterval(setAccountInfo(), 5000)')
+      this.setAccountInfo(this.currentAccount)
+    }, 5000)
   }
 }
 

@@ -7,7 +7,13 @@ import {
   Progress,
   Tooltip,
 } from 'antd'
+import {
+  inject,
+  observer,
+} from 'mobx-react'
 import styled from 'styled-components'
+import bytes from 'bytes'
+// import { accountStore } from '../../stores/AccountStore'
 
 const colors = {
   'primary': '#1890ff',
@@ -29,9 +35,9 @@ const TitleBadge = styled(Badge)`
   vertical-align: inherit;
 `
 
-const TitleLink = styled.a`
-  margin-left: 8px;
-`
+// const TitleLink = styled.a`
+//   margin-right: 8px;
+// `
 
 const UpperDiv = styled.div`
   margin-bottom: 1rem;
@@ -64,11 +70,73 @@ const SubData = styled.span`
   color: black;
 `
 
+@inject('accountStore')
+@observer
 class CardTemplate extends React.Component {
+  // constructor(props) {
+  //   super(props)
+  // }
+
   render() {
+    const { accountStore } = this.props
+    // const cpuAvailable = accountStore.accountInfo.cpu_limit.available || ''
+    // const cpuMax = accountStore.accountInfo.cpu_limit.max || ''
+    // const cpuUsed = accountStore.accountInfo.cpu_limit.used || ''
+    // console.log(accountStore.accountInfo.account_name)
+
+    // get cpu usage
+    let cpuLimit = null
+    let loading = true
+    if (accountStore.accountInfo.cpu_limit) {
+      cpuLimit = accountStore.accountInfo.cpu_limit
+      loading = false
+      console.log(JSON.stringify(cpuLimit))
+    } else {
+      cpuLimit = {
+        'available': 0,
+        'used': 0,
+        'max': 0,
+      }
+    }
+
+    // get network usage
+    let netLimit = null
+    if (accountStore.accountInfo.net_limit) {
+      netLimit = accountStore.accountInfo.net_limit
+      console.log(JSON.stringify(netLimit))
+    } else {
+      netLimit = {
+        'available': 0,
+        'used': 0,
+        'max': 0,
+      }
+    }
+
+    // get ram usage
+    let ramLimit = null
+    if (accountStore.accountInfo.ram_quota) {
+      ramLimit = {
+        max: accountStore.accountInfo.ram_quota,
+        used: accountStore.accountInfo.ram_usage,
+        available: accountStore.accountInfo.ram_quota - accountStore.accountInfo.ram_usage,
+      }
+      console.log(JSON.stringify(ramLimit))
+    } else {
+      ramLimit = {
+        'available': 0,
+        'used': 0,
+        'max': 0,
+      }
+    }
+
     return (
       <Card
-        title='Total Usage'
+        title={(
+          <span>
+            <TitleIcon type='info-circle' />
+            Total Usage
+          </span>
+          )}
         type='inner'
         extra={(
           <div>
@@ -77,67 +145,86 @@ class CardTemplate extends React.Component {
             </Tooltip>
           </div>
         )}
+        loading={loading}
       >
         <UpperDiv>
-          <span>CPU</span><Progress type='line' percent={20} strokeColor={colors.cpu} status='active' format={() => '123'} />
-          <span>NET</span><Progress type='line' percent={40} strokeColor={colors.net} status='active' format={() => '123'} />
-          <span>RAM</span><Progress type='line' percent={80} strokeColor={colors.ram} status='active' format={() => '123'} />
+          <span>CPU</span>
+          <Progress
+            type='line'
+            strokeColor={colors.cpu}
+            status='active'
+            percent={cpuLimit.used / cpuLimit.max * 100}
+            format={text => text.toFixed(2) + ' %'}
+          />
+          <span>NET</span>
+          <Progress
+            type='line'
+            strokeColor={colors.cpu}
+            status='active'
+            percent={netLimit.used / netLimit.max * 100}
+            format={text => text.toFixed(2) + ' %'}
+          />
+          <span>RAM</span>
+          <Progress
+            type='line'
+            strokeColor={colors.cpu}
+            status='active'
+            percent={ramLimit.used / ramLimit.max * 100}
+            format={text => text.toFixed(2) + ' %'}
+          />
         </UpperDiv>
         <Divider />
         <UpperDiv>
-          <Label>CPU </Label>
+          <Label>CPU</Label>
           <Data>
             <SubDiv>
               <SubLabel>Quota</SubLabel>
-              <SubData>123 MB</SubData>
-            </SubDiv>
-            <SubDiv>
-              <SubLabel>Available</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(cpuLimit.max, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
             <SubDiv>
               <SubLabel>Used</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(cpuLimit.used, { unitSeparator: ' ' }) }</SubData>
+            </SubDiv>
+            <SubDiv>
+              <SubLabel>Available</SubLabel>
+              <SubData>{ bytes(cpuLimit.available, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
           </Data>
         </UpperDiv>
         <UpperDiv>
-          <Label>NET </Label>
+          <Label>NET</Label>
           <Data>
             <SubDiv>
               <SubLabel>Quota</SubLabel>
-              <SubData>123 MB</SubData>
-            </SubDiv>
-            <SubDiv>
-              <SubLabel>Available</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(netLimit.max, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
             <SubDiv>
               <SubLabel>Used</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(netLimit.used, { unitSeparator: ' ' }) }</SubData>
+            </SubDiv>
+            <SubDiv>
+              <SubLabel>Available</SubLabel>
+              <SubData>{ bytes(netLimit.available, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
           </Data>
         </UpperDiv>
         <UpperDiv>
-          <Label>RAN </Label>
+          <Label>RAM </Label>
           <Data>
             <SubDiv>
               <SubLabel>Quota</SubLabel>
-              <SubData>123 MB</SubData>
-            </SubDiv>
-            <SubDiv>
-              <SubLabel>Available</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(ramLimit.max, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
             <SubDiv>
               <SubLabel>Used</SubLabel>
-              <SubData>123 MB</SubData>
+              <SubData>{ bytes(ramLimit.used, { unitSeparator: ' ' }) }</SubData>
+            </SubDiv>
+            <SubDiv>
+              <SubLabel>Available</SubLabel>
+              <SubData>{ bytes(ramLimit.available, { unitSeparator: ' ' }) }</SubData>
             </SubDiv>
           </Data>
         </UpperDiv>
-        <div>
-          Bottom div
-        </div>
       </Card>
     )
   }
