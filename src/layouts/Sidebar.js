@@ -53,8 +53,9 @@ class SidebarMenu extends React.Component {
   constructor(props) {
     super(props)
 
+    getAccountList()
     this.accountStore = this.props.accountStore || {}
-    this.account = getAccountList()[0] || ''
+    this.account = this.accountStore.currentAccount
     this.accountStore.setAccountInfo(this.account)
     this.accountInfo = this.accountStore.accountInfo
   }
