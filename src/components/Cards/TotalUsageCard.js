@@ -1,5 +1,9 @@
 import React from 'react'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Badge,
   Card,
   Divider,
@@ -7,10 +11,6 @@ import {
   Progress,
   Tooltip,
 } from 'antd'
-import {
-  inject,
-  observer,
-} from 'mobx-react'
 import styled from 'styled-components'
 import bytes from 'bytes'
 // import { accountStore } from '../../stores/AccountStore'
