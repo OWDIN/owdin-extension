@@ -32,6 +32,9 @@ class AccountStore {
   @observable
   network = 'OWDIN TestNet'
 
+  @observable
+  owdinBalance = 0
+
   @action
   setAccountList = (data) => {
     this.accountList = data
@@ -72,6 +75,11 @@ class AccountStore {
   }
 
   @action
+  setOwdinBalance = (balance) => {
+    this.owdinBalance = balance
+  }
+
+  @action
   checkStatus = () => {
     try {
       if (isExtension()) {
@@ -93,11 +101,21 @@ class AccountStore {
     // WIP
   }
 
+  @action
+  fetchOwdinBalance = () => {
+    eos.getCurrencyBalance('owdinnetwork', this.currentAccount, 'OWDIN')
+      .then(result => this.setOwdinBalance(result))
+      .catch(error => Log.error(error))
+  }
+
   constructor() {
+    Log.info('MobX::AccountStore', 'constructor()')
+
     setInterval(() => {
       Log.info('MobX::AccountStore', 'setInterval(5000)')
       this.setAccountInfo(this.currentAccount)
       this.checkStatus()
+      this.fetchOwdinBalance()
     }, 5000)
   }
 }

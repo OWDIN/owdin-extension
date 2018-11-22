@@ -39,6 +39,13 @@ const Data = styled.span`
 @inject('accountStore')
 @observer
 class TokenBalance extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const { accountStore } = this.props
+    accountStore.fetchOwdinBalance()
+  }
+
   render() {
     const { accountStore } = this.props
 
@@ -70,7 +77,7 @@ class TokenBalance extends React.Component {
         <UpperDiv>
           <Label>OWDIN</Label>
           <Data>
-            10000 OWDIN
+            { accountStore.owdinBalance }
           </Data>
         </UpperDiv>
       </Card>
