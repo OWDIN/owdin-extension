@@ -40,7 +40,7 @@ class App extends React.Component {
   constructor() {
     super()
 
-    getAccountList()
+    getAccountList(accountStore)
 
     this.state = {
       open: false,
@@ -94,7 +94,7 @@ class App extends React.Component {
 
   render() {
     Log.info('App', 'render()')
-    const status = getStatus()
+    const status = getStatus(accountStore)
 
     switch (status) {
       case 'online':
@@ -124,8 +124,6 @@ class App extends React.Component {
                   <Header
                     open={this.state.open}
                     toggle={this.toggleSidebar}
-                    status={accountStore.status}
-                    network={accountStore.network}
                   />
                   <Content>
                     <IndexRouter />

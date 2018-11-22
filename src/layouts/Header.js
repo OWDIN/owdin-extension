@@ -1,5 +1,9 @@
 import React from 'react'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Badge,
   Icon,
   Layout,
@@ -8,6 +12,7 @@ import {
   Div,
   // H1,
 } from 'glamorous'
+import Log from '../utils/debugLog'
 
 const HeaderWrapper = Layout.Header
 
@@ -19,7 +24,9 @@ const status = {
   'unset': 'default',
 }
 
-const Header = (props) => {
+const Header = inject('accountStore')(observer((props) => {
+  Log.info('Header::accountStore', props.accountStore)
+
   return (
     <HeaderWrapper style={{ background: '#fff', padding: 0 }}>
       <Div
@@ -41,8 +48,8 @@ const Header = (props) => {
         {/* <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1> */}
       </Div>
       <Badge
-        status={status[props.status]}
-        text={props.network}
+        status={status[props.accountStore.status]}
+        text={props.accountStore.network}
         style={{
           float: 'right',
           padding: '0 20px',
@@ -50,6 +57,6 @@ const Header = (props) => {
       />
     </HeaderWrapper>
   )
-}
+}))
 
 export default Header

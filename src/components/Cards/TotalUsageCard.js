@@ -13,7 +13,6 @@ import {
 } from 'antd'
 import styled from 'styled-components'
 import bytes from 'bytes'
-// import { accountStore } from '../../stores/AccountStore'
 
 const colors = {
   'primary': '#1890ff',
@@ -72,7 +71,7 @@ const SubData = styled.span`
 
 @inject('accountStore')
 @observer
-class CardTemplate extends React.Component {
+class TotalUsageCard extends React.Component {
   render() {
     const { accountStore } = this.props
 
@@ -219,4 +218,4 @@ class CardTemplate extends React.Component {
   }
 }
 
-export default CardTemplate
+export default TotalUsageCard

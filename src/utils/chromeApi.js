@@ -2,7 +2,9 @@
 /**
  * Chrome API Wrapper
  */
-import { accountStore } from '../stores/AccountStore'
+// accountStore create new object occasionally
+// import { accountStore } from '../stores/AccountStore'
+import Log from './debugLog'
 
 export const sample = {
   version: '0.0.x',
@@ -44,19 +46,21 @@ export function isExtension() {
       return true
     }
   } catch (error) {
-    console.log(error)
+    Log.error(error)
   }
 
   return false
 }
 
-export function getStatus() {
+export function getStatus(accountStore = null) {
   try {
     if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.get('status', item => {
-        if (item.status !== accountStore.status && JSON.stringify(item) !== '{}') {
-          accountStore.setStatus(item.status)
+        if (accountStore) {
+          if (item.status !== accountStore.status && JSON.stringify(item) !== '{}') {
+            accountStore.setStatus(item.status)
+          }
         }
       })
       /* eslint-enable */
@@ -71,7 +75,11 @@ export function getStatus() {
   return accountStore.status
 }
 
-export function setStatus(status) {
+export function setStatus(status, accountStore = null) {
+  if (accountStore !== null) {
+    accountStore.setStatus(status)
+  }
+
   try {
     if (isExtension()) {
       /* eslint-disable */
@@ -79,15 +87,15 @@ export function setStatus(status) {
         status,
       })
       /* eslint-enable */
-    } else {
-      // for test
-      localStorage.setItem('status', status)
     }
+    // for test
+    localStorage.setItem('status', status)
   } catch (error) {
     throw error
   }
 
-  accountStore.setStatus(status)
+  Log.info('chromeApi::accountStore.setStatus()', status)
+  Log.info('chromeApi::accountStore', accountStore)
 }
 
 export function setPassphrase(passphrase) {
@@ -108,7 +116,7 @@ export function setPassphrase(passphrase) {
   }
 }
 
-export function getPassphrase() {
+export function getPassphrase(accountStore) {
   try {
     /* eslint-disable */
     if (isExtension()) {
@@ -120,18 +128,18 @@ export function getPassphrase() {
     }
     /* eslint-enable */
   } catch (error) {
-    console.log(error)
+    Log.error(error)
   }
 
   return accountStore.passphrase
 }
 
-export function isValidPassphrase(passphrase) {
-  const storePassphrase = getPassphrase()
+export function isValidPassphrase(passphrase, accountStore = null) {
+  const storePassphrase = getPassphrase(accountStore)
   if (storePassphrase === passphrase) {
     return true
   }
-  console.log(storePassphrase, passphrase)
+  Log.info(storePassphrase, passphrase)
 
   return false
 }
@@ -159,7 +167,7 @@ export async function getKeyPairs() {
       return JSON.parse(localStorage.getItem('keyPairs'))
     }
   } catch (error) {
-    console.log(error)
+    Log.error(error)
   }
 
   return _storageData
@@ -191,14 +199,14 @@ export function setKeyPairs(accountName, privateKeys) {
       })
       /* eslint-enable */
     } catch (error) {
-      console.log(error)
+      Log.error(error)
     }
   } else {
     localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKeys }))
   }
 }
 
-export function getAccountList() {
+export function getAccountList(accountStore) {
   if (isExtension()) {
     try {
       /* eslint-disable */
@@ -207,7 +215,7 @@ export function getAccountList() {
       })
       /* eslint-enable */
     } catch (error) {
-      console.log(error)
+      Log.error(error)
       return false
     }
   } else {
@@ -218,8 +226,8 @@ export function getAccountList() {
   return accountStore.accountList
 }
 
-export function isLoggedIn() {
-  if (['online', 'offline'].includes(getStatus())) {
+export function isLoggedIn(accountStore) {
+  if (['online', 'offline'].includes(getStatus(accountStore))) {
     return true
   }
 

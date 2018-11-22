@@ -21,7 +21,7 @@ const Error404 = ({ location }) => (
   </Div>
 )
 
-export default class IndexRouter extends React.Component {
+class IndexRouter extends React.Component {
   render() {
     return (
       <Switch history={history}>
@@ -61,3 +61,5 @@ export default class IndexRouter extends React.Component {
     )
   }
 }
+
+export default IndexRouter

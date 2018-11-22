@@ -5,6 +5,9 @@ import {
   spy,
 } from 'mobx'
 import {
+  isExtension,
+} from '../utils/chromeApi'
+import {
   // getAccountInfo,
   eos,
 } from '../utils/eosJsApi'
@@ -68,10 +71,33 @@ class AccountStore {
     this.network = text
   }
 
+  @action
+  checkStatus = () => {
+    try {
+      if (isExtension()) {
+        /* eslint-disable */
+        chrome.storage.local.get('status', item => {
+          this.setStatus(item.status)
+        })
+        /* eslint-enable */
+      } else {
+        this.setStatus(localStorage.getItem('status'))
+      }
+    } catch (error) {
+      Log.error(error)
+    }
+  }
+
+  @action
+  checkNetwork = () => {
+    // WIP
+  }
+
   constructor() {
     setInterval(() => {
-      Log.info('MobX::AccountStore', 'setInterval(setAccountInfo(), 5000)')
+      Log.info('MobX::AccountStore', 'setInterval(5000)')
       this.setAccountInfo(this.currentAccount)
+      this.checkStatus()
     }, 5000)
   }
 }
@@ -80,8 +106,8 @@ export const accountStore = new AccountStore()
 
 spy((event) => {
   if (event.type === 'action') {
-    Log.info('MobX::AccountStore', `${event.name} with args: ${event.arguments}`)
-    Log.info('MobX::AccountStore', accountStore)
+    Log.info('MobX::AccountStore::action', `${event.name} with args: ${event.arguments}`)
+    Log.info('MobX::AccountStore::store', accountStore)
   }
 })
 

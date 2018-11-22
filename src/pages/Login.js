@@ -1,5 +1,9 @@
 import React from 'react'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Button,
   Form,
   Icon,
@@ -21,9 +25,13 @@ import AppIcon from '../assets/img/owdin-bi-color.svg'
 
 const FormItem = Form.Item
 
+@inject('accountStore')
+@observer
 class Login extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    this.accountStore = this.props.accountStore
 
     this.state = {
       passphrase: '',
@@ -32,10 +40,10 @@ class Login extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault()
-    const isValid = isValidPassphrase(this.state.passphrase)
+    const isValid = isValidPassphrase(this.state.passphrase, this.accountStore)
 
     if (isValid) {
-      setStatus('online')
+      setStatus('online', this.accountStore)
     } else {
       message.error('Invalid passphrase. Try Again.')
     }
@@ -52,7 +60,7 @@ class Login extends React.Component {
   }
 
   render() {
-    if (isLoggedIn() === true) {
+    if (isLoggedIn(this.accountStore) === true) {
       window.location.replace('/index.html')
     }
 

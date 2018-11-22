@@ -5,7 +5,8 @@ import {
 } from 'antd'
 import styled from 'styled-components'
 import CardTemplate from '../components/Cards/CardTemplate'
-import UsageCard from '../components/Cards/TotalUsageCard'
+import TokenBalanceCard from '../components/Cards/TokenBalanceCard'
+import TotalUsageCard from '../components/Cards/TotalUsageCard'
 
 const FlexRow = styled(Row)`
   display: flex;
@@ -40,7 +41,10 @@ class Dashboard extends React.Component {
           justify='center'
         >
           <FlexCol>
-            <UsageCard />
+            <TokenBalanceCard />
+          </FlexCol>
+          <FlexCol>
+            <TotalUsageCard />
           </FlexCol>
           <FlexCol>
             <CardTemplate />
