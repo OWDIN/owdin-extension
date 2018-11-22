@@ -1,0 +1,81 @@
+{
+    "account_name": null,
+    "head_block_num": null,
+    "head_block_time": null,
+    "privileged": null,
+    "last_code_update": null,
+    "created": null,
+    "core_liquid_balance": null,
+    "ram_quota": null,
+    "net_weight": null,
+    "cpu_weight": null,
+    "net_limit":
+    {
+        "used": null,
+        "available": null,
+        "max": null
+    },
+    "cpu_limit":
+    {
+        "used": null,
+        "available": null,
+        "max": null
+    },
+    "ram_usage": null,
+    "permissions":
+    [{
+        "perm_name": null,
+        "parent": null,
+        "required_auth":
+        {
+            "threshold": null,
+            "keys":
+            [{
+                "key": null,
+                "weight": null
+            }],
+            "accounts": null,
+            "waits": null
+        }
+    },
+    {
+        "perm_name": null,
+        "parent": null,
+        "required_auth":
+        {
+            "threshold": null,
+            "keys":
+            [{
+                "key": null,
+                "weight": null
+            }],
+            "accounts": null,
+            "waits": null
+        }
+    }],
+    "total_resources":
+    {
+        "owner": null,
+        "net_weight": null,
+        "cpu_weight": null,
+        "ram_bytes": null
+    },
+    "self_delegated_bandwidth":
+    {
+        "from": null,
+        "to": null,
+        "net_weight": null,
+        "cpu_weight": null
+    },
+    "refund_request": null,
+    "voter_info":
+    {
+        "owner": null,
+        "proxy": null,
+        "producers": null,
+        "staked": null,
+        "last_vote_weight": null,
+        "proxied_vote_weight": null,
+        "is_proxy": null
+    }
+}

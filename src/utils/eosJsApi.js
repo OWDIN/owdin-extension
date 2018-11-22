@@ -10,8 +10,8 @@ import ecc from 'eosjs-ecc'
 // const defaultPrivKey = ''
 const eosOption = {
   // httpEndpoint: 'https://api.eosnewyork.io',  // default, null for cold-storage
-  // httpEndpoint: 'https://eos-kr.owdin.network:8888',
-  httpEndpoint: 'https://eos.owdin.network:8888',
+  // httpEndpoint: 'https://eos.owdin.network:8888',
+  httpEndpoint: 'https://eos-kr.owdin.network:8888',
   verbose: false, // API logging
   // logger: { // Default logging functions
   //   log: config.verbose ? console.log : null,

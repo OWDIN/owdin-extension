@@ -7,12 +7,12 @@ import {
   observer,
 } from 'mobx-react'
 import {
-  Avatar,
-  Icon,
-  Menu,
   // message,
   // Tag,
   // Tooltip,
+  Avatar,
+  Icon,
+  Menu,
 } from 'antd'
 import {
   Div,
@@ -115,12 +115,15 @@ class SidebarMenu extends React.Component {
               <span>Wallet</span>
             </NavLink>
           </Menu.Item>
+
+          {/* TODO: Settings */}
           <Menu.Item key='/settings' disabled>
             <NavLink to='/settings'>
               <Icon type='tool' theme='outlined' />
               <span>Settings</span>
             </NavLink>
           </Menu.Item>
+
           <Menu.Item key='/logout'>
             <NavLink to='/logout'>
               <Icon type='logout' theme='outlined' />

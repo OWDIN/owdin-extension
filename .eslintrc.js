@@ -15,6 +15,7 @@ module.exports = {
     'jsx-a11y/media-has-caption': [0],
     'jsx-quotes': ['error', 'prefer-single'],
     // 'max-len': ['error', { 'code': 120 }],
+    'lines-between-class-members': [0],
     'max-len': [0],
     'no-alert': [0],
     'no-console': [0],

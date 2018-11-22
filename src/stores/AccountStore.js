@@ -12,6 +12,7 @@ import {
   eos,
 } from '../utils/eosJsApi'
 import Log from '../utils/debugLog'
+import accountInfoFrame from '../data/get_account_info.json'
 
 class AccountStore {
   @observable
@@ -21,7 +22,7 @@ class AccountStore {
   currentAccount = ''
 
   @observable
-  accountInfo = {}
+  accountInfo = accountInfoFrame
 
   @observable
   passphrase = ''
@@ -112,7 +113,7 @@ class AccountStore {
     Log.info('MobX::AccountStore', 'constructor()')
 
     setInterval(() => {
-      Log.info('MobX::AccountStore', 'setInterval(5000)')
+      Log.info('MobX::AccountStore::setInterval(5000)', this)
       this.setAccountInfo(this.currentAccount)
       this.checkStatus()
       this.fetchOwdinBalance()
@@ -124,8 +125,8 @@ export const accountStore = new AccountStore()
 
 spy((event) => {
   if (event.type === 'action') {
-    Log.info('MobX::AccountStore::action', `${event.name} with args: ${event.arguments}`)
-    Log.info('MobX::AccountStore::store', accountStore)
+    // Log.info('MobX::AccountStore::action', `${event.name} with args: ${event.arguments}`)
+    // Log.info('MobX::AccountStore::store', accountStore)
   }
 })
 
