@@ -153,7 +153,7 @@ class SidebarMenu extends React.Component {
               this.props.closeSidebar()
             }}
           >
-            <NavLink to='/logout'>
+            <NavLink to='/logout' style={{ color: 'red' }}>
               <Icon type='logout' theme='outlined' />
               <span>Logout</span>
             </NavLink>
