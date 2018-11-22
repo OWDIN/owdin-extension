@@ -69,9 +69,11 @@ class App extends React.Component {
   }
 
   closeSidebar = () => {
-    this.setState({
-      open: false,
-    })
+    if (this.state.docked === false) {
+      this.setState({
+        open: false,
+      })
+    }
   }
 
   resize = () => {
@@ -115,10 +117,11 @@ class App extends React.Component {
               >
                 <Sidebar
                   sidebar={(
-                    <SidebarMenu />
+                    <SidebarMenu
+                      closeSidebar={this.closeSidebar}
+                    />
                   )}
                   open={this.state.open}
-                  closeSidebar={this.closeSidebar}
                   onSetOpen={this.toggleSidebar}
                   docked={this.state.docked}
                   styles={{

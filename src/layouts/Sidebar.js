@@ -1,7 +1,6 @@
 import React from 'react'
-import {
-  NavLink,
-} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { observable } from 'mobx'
 import {
   inject,
   observer,
@@ -22,6 +21,7 @@ import {
   newWindow,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
+
 
 const UpperDiv = styled.div`
   margin-bottom: 10px;
@@ -49,6 +49,8 @@ margin-right: 10px;
 @inject('accountStore')
 @observer
 class SidebarMenu extends React.Component {
+  @observable selectedMenu = window.location.href.split('#')[1]
+
   constructor(props) {
     super(props)
 
@@ -56,10 +58,15 @@ class SidebarMenu extends React.Component {
     this.account = this.accountStore.currentAccount
     this.accountStore.setAccountInfo(this.account)
     this.accountInfo = this.accountStore.accountInfo
+
+    if (window.location.href.split('#')[1] === '/') {
+      this.selectedMenu = '/dashboard'
+    }
   }
 
   render() {
     Log.info('Sidebar', 'render()')
+    Log.info('Sidebar::selectedMenu', this.selectedMenu)
 
     // let accountBalance = ''
     // try {
@@ -101,30 +108,51 @@ class SidebarMenu extends React.Component {
         </Div>
         <Menu
           mode='inline'
-          defaultSelectedKeys={[window.location.href.split('#')[1]]}
+          selectedKeys={[this.selectedMenu]}
         >
-          <Menu.Item key='/dashboard'>
+          <Menu.Item
+            key='/dashboard'
+            onClick={(item) => {
+              this.selectedMenu = item.key
+              this.props.closeSidebar()
+            }}
+          >
             <NavLink to='/dashboard'>
               <Icon type='dashboard' theme='outlined' />
               <span>Dashboard</span>
             </NavLink>
           </Menu.Item>
-          <Menu.Item key='/wallet'>
+          <Menu.Item
+            key='/wallet'
+            onClick={(item) => {
+              this.selectedMenu = item.key
+              this.props.closeSidebar()
+            }}
+          >
             <NavLink to='/wallet'>
               <Icon type='wallet' theme='outlined' />
               <span>Wallet</span>
             </NavLink>
           </Menu.Item>
-
-          {/* TODO: Settings */}
-          <Menu.Item key='/settings' disabled>
+          <Menu.Item
+            key='/settings'
+            onClick={(item) => {
+              this.selectedMenu = item.key
+              this.props.closeSidebar()
+            }}
+          >
             <NavLink to='/settings'>
               <Icon type='tool' theme='outlined' />
               <span>Settings</span>
             </NavLink>
           </Menu.Item>
-
-          <Menu.Item key='/logout'>
+          <Menu.Item
+            key='/logout'
+            onClick={(item) => {
+              this.selectedMenu = item.key
+              this.props.closeSidebar()
+            }}
+          >
             <NavLink to='/logout'>
               <Icon type='logout' theme='outlined' />
               <span>Logout</span>

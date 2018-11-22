@@ -243,4 +243,19 @@ export function newWindow() {
   window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
 }
 
+export function resetExtension() {
+  if (isExtension()) {
+    try {
+      /* eslint-disable */
+      chrome.storage.local.clear()
+      /* eslint-enable */
+    } catch (error) {
+      Log.error(error)
+    }
+  }
+
+  localStorage.clear()
+  sessionStorage.clear()
+}
+
 export default version
