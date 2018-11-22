@@ -4,9 +4,8 @@ import {
   Row,
 } from 'antd'
 import styled from 'styled-components'
+import CardTemplate from '../components/Cards/CardTemplate'
 import TokenBalanceCard from '../components/Cards/TokenBalanceCard'
-import TotalUsageCard from '../components/Cards/TotalUsageCard'
-// import CardTemplate from '../components/Cards/CardTemplate'
 
 const FlexRow = styled(Row)`
   display: flex;
@@ -44,13 +43,11 @@ class Dashboard extends React.Component {
             <TokenBalanceCard />
           </FlexCol>
           <FlexCol>
-            <TotalUsageCard />
+            <CardTemplate />
           </FlexCol>
-          {/*
           <FlexCol>
             <CardTemplate />
           </FlexCol>
-          */}
         </FlexRow>
       </div>
     )

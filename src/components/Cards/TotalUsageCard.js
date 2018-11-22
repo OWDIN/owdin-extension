@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import styled from 'styled-components'
 import bytes from 'bytes'
+import Log from '../../utils/debugLog'
 
 const colors = {
   'primary': '#1890ff',
@@ -73,6 +74,8 @@ const SubData = styled.span`
 @observer
 class TotalUsageCard extends React.Component {
   render() {
+    Log.info('TotalUsageCard', 'render()')
+
     const { accountStore } = this.props
 
     // get cpu usage
@@ -217,5 +220,15 @@ class TotalUsageCard extends React.Component {
     )
   }
 }
+// TotalUsageCard.defaultProps = {
+//   accountStore: {
+//     accountInfo: {
+//       cpu_limit: '',
+//       net_limit: '',
+//       ram_quota: '',
+//       ram_usage: '',
+//     },
+//   },
+// }
 
 export default TotalUsageCard

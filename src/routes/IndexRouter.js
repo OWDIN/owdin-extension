@@ -12,6 +12,7 @@ import {
   setStatus,
 } from '../utils/chromeApi'
 import Dashboard from '../pages/Dashboard'
+import Wallet from '../pages/Wallet'
 
 const Error404 = ({ location }) => (
   <Div
@@ -30,6 +31,13 @@ class IndexRouter extends React.Component {
           path='/dashboard'
           render={() => {
             return <Dashboard {...this.props} />
+          }}
+        />
+        <Route
+          exact
+          path='/wallet'
+          render={() => {
+            return <Wallet {...this.props} />
           }}
         />
         <Route
