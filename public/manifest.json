@@ -4,7 +4,7 @@
   "short_name": "OWDIN Wallet",
   "author": "https://owdin.network",
   "description": "Browser Extension for OWDIN Wallet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "content_security_policy": "script-src 'self'  https://ssl.google-analytics.com https://www.google-analytics.com 'unsafe-eval' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
   "browser_action": {
     "default_popup": "index.html",

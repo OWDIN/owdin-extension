@@ -9,6 +9,7 @@ import {
   Card,
   Collapse,
   Icon,
+  Tag,
   Tooltip,
 } from 'antd'
 import styled from 'styled-components'
@@ -74,17 +75,39 @@ class ActionListCard extends React.Component {
 
           const refinedActions = resp.actions.map((action) => {
             if (actionContracts.includes(action.action_trace.act.account) && action.action_trace.act.name === 'transfer') {
+              let StatusTag = <Tag color='yellow'>Pending</Tag>
+
+              if (action.block_num < resp.last_irreversible_block) {
+                StatusTag = <Tag color='blue'>Approved</Tag>
+              }
+
               return (
                 <CustomPanel
-                  header={`
-                    ${action.action_trace.act.data.from} > ${action.action_trace.act.data.to} - ${action.action_trace.act.data.quantity}
-                  `}
+                  header={(
+                    <div>
+                      <span>{action.action_trace.act.data.from}</span>
+                      <TitleIcon type='arrow-right' />
+                      <span>{action.action_trace.act.data.to}</span>
+                      <div>
+                        {action.action_trace.act.data.quantity}
+                      </div>
+                      <div>
+                        {StatusTag}
+                      </div>
+                    </div>
+                  )}
+                  showArrow={false}
                   key={action.global_action_seqm}
                 >
                   <div>block_time:{action.block_time}</div>
                   <div>block_num:{action.block_num}</div>
                   <div>global_action_seq:{action.global_action_seq}</div>
-                  <div>global_action_seq:{action.global_action_seq}</div>
+                  <div>from:{action.action_trace.act.data.from}</div>
+                  <div>to:{action.action_trace.act.data.to}</div>
+                  <div>quantity:{action.action_trace.act.data.quantity}</div>
+                  <div>memo:{action.action_trace.act.data.memo}</div>
+                  <div>hexdata:{action.action_trace.act.hex_data}</div>
+                  <div>trx_id:{action.action_trace.trx_id}</div>
                 </CustomPanel>
               )
             }
