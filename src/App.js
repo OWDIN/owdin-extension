@@ -68,6 +68,12 @@ class App extends React.Component {
     }
   }
 
+  closeSidebar = () => {
+    this.setState({
+      open: false,
+    })
+  }
+
   resize = () => {
     if (window.innerWidth <= 576) {
       if (this.state.docked === true) {
@@ -112,6 +118,7 @@ class App extends React.Component {
                     <SidebarMenu />
                   )}
                   open={this.state.open}
+                  closeSidebar={this.closeSidebar}
                   onSetOpen={this.toggleSidebar}
                   docked={this.state.docked}
                   styles={{

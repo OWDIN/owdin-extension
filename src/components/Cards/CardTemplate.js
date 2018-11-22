@@ -36,14 +36,19 @@ const TitleLink = styled.a`
 const UpperDiv = styled.div`
   margin-bottom: 1rem;
 `
-const SubDiv = styled.div`
-  line-height: 0.8;
-`
 const Label = styled.span`
   font-size: 1rem;
   font-weight: 500;
   margin-right: 1rem;
   display: block;
+`
+const Data = styled.span`
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: black;
+`
+const SubDiv = styled.div`
+  line-height: 0.8;
 `
 const SubLabel = styled.span`
   font-size: 0.8rem;
@@ -51,11 +56,6 @@ const SubLabel = styled.span`
   margin-left: 1rem;
   margin-right: 1rem;
   display: inline;
-`
-const Data = styled.span`
-  font-size: 1.8rem;
-  font-weight: normal;
-  color: black;
 `
 const SubData = styled.span`
   font-size: 0.8rem;

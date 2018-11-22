@@ -61,12 +61,12 @@ class SidebarMenu extends React.Component {
   render() {
     Log.info('Sidebar', 'render()')
 
-    let accountBalance = ''
-    try {
-      accountBalance = this.accountStore.accountInfo.core_liquid_balance
-    } catch (error) {
-      Log.error('this.accountStore.accountInfo.core_liquid_balance')
-    }
+    // let accountBalance = ''
+    // try {
+    //   accountBalance = this.accountStore.accountInfo.core_liquid_balance
+    // } catch (error) {
+    //   Log.error('this.accountStore.accountInfo.core_liquid_balance')
+    // }
 
     return (
       <Div>
@@ -83,9 +83,9 @@ class SidebarMenu extends React.Component {
           <UpperDiv style={{ marginTop: '10px' }}>
             <b>{this.account}</b>
           </UpperDiv>
-          <UpperDiv>
+          {/* <UpperDiv>
             {accountBalance}
-          </UpperDiv>
+          </UpperDiv> */}
           <div>
             {/* <Tooltip placement='top' title='Copy address'>
               <Clipboard
@@ -101,7 +101,6 @@ class SidebarMenu extends React.Component {
         </Div>
         <Menu
           mode='inline'
-          selectedKeys={[window.location.href.split('#')[1]]}
           defaultSelectedKeys={[window.location.href.split('#')[1]]}
         >
           <Menu.Item key='/dashboard'>
