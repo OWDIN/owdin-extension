@@ -17,6 +17,7 @@ import {
   setPassphrase,
   setStatus,
 } from '../utils/chromeApi'
+import Log from '../utils/debugLog'
 import SetPasswordForm from '../components/SetPasswordForm'
 import SetKeyPairForm from '../components/SetKeyPairForm'
 import AppIcon from '../assets/img/owdin-bi-color.svg'
@@ -74,7 +75,7 @@ class Setup extends React.Component {
       current: prevState.current + 1,
       disabledNext: true,
     }), () => {
-      console.log(this.state)
+      Log.info('Setup::toggleNext()', this.state)
     })
   }
 
@@ -83,7 +84,7 @@ class Setup extends React.Component {
       current: prevState.current - 1,
       disabledNext: false,
     }), () => {
-      console.log(this.state)
+      Log.info('Setup::togglePrev()', this.state)
     })
   }
 

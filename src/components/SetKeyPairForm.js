@@ -9,6 +9,7 @@ import {
   getAccountsByPubKey,
   privToPub,
 } from '../utils/eosJsApi'
+import Log from '../utils/debugLog'
 
 const FormItem = Form.Item
 
@@ -82,7 +83,7 @@ class SetPassword extends React.Component {
     this.setState({
       [event.target.name]: event.target.value,
     }, () => {
-      console.log(this.state)
+      Log.info('SetKeyPairForm::handleChange()', this.state)
       // check private key
       if (this.state.privateKey.length === 0) {
         this.setState({

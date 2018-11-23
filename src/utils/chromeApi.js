@@ -218,8 +218,10 @@ export function getAccountList(accountStore) {
       Log.error(error)
       return false
     }
-  } else {
-    // for test
+  }
+
+  // for test
+  if (localStorage.getItem('keyPairs') !== null) {
     accountStore.setAccountList(Object.keys(JSON.parse(localStorage.getItem('keyPairs'))))
   }
 

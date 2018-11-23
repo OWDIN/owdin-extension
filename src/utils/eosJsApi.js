@@ -6,13 +6,16 @@
 // } from 'eosjs'
 import EosApi from 'eosjs-api'
 import ecc from 'eosjs-ecc'
+import Log from './debugLog'
 
+// const httpEndpoint = 'https://api.eosnewyork.io'  // default, null for cold-storage
+// const httpEndpoint = 'https://eos.owdin.network:8888'
+const httpEndpoint = 'https://eos-kr.owdin.network:8888'
 // const defaultPrivKey = ''
+
 const eosOption = {
-  // httpEndpoint: 'https://api.eosnewyork.io',  // default, null for cold-storage
-  // httpEndpoint: 'https://eos.owdin.network:8888',
-  httpEndpoint: 'https://eos-kr.owdin.network:8888',
   verbose: false, // API logging
+  httpEndpoint,
   // logger: { // Default logging functions
   //   log: config.verbose ? console.log : null,
   //   error: config.verbose ? console.error : null,
@@ -21,7 +24,7 @@ const eosOption = {
 }
 export const eos = EosApi(eosOption)
 
-// const rpc = new JsonRpc('https://eos.owdin.network:8888')
+// const rpc = new JsonRpc(httpEndpoint)
 // const signatureProvider = new JsSignatureProvider([defaultPrivKey])
 // const api = new Api({
 //   rpc,
@@ -35,7 +38,7 @@ export function privToPub(privateKey) {
     const pubKey = ecc.privateToPublic(privateKey)
     return pubKey
   } catch (error) {
-    console.log(error)
+    Log.error('eosJsApi::privToPub()', error)
   }
 
   return false
@@ -47,7 +50,7 @@ export async function getAccountsByPubKey(publicKey) {
   await eos.getKeyAccounts(publicKey).then((resp) => {
     result = resp.account_names
   }).catch((error) => {
-    console.log('ERR::eosJsApi::getAccountByPrivKey()', error)
+    Log.error('eosJsApi::getAccountByPrivKey()', error)
   })
 
   return result
