@@ -163,11 +163,17 @@ class Setup extends React.Component {
             height='52px'
           />
           <H1>Set up your wallet</H1>
-          <span id='open-popup' role='presentation' onClick={() => newWindow()}>
-            {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
-            <span>Open in a new Popup Window</span>
-            {/* </a> */}
-          </span>
+          {
+          (window.name)
+            ? ''
+            : (
+              <span id='open-popup' role='presentation' onClick={() => newWindow()}>
+                {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
+                <Button>Open in a new Popup Window</Button>
+                {/* </a> */}
+              </span>
+            )
+          }
         </TitleDiv>
         <Steps
           direction='vertical'
