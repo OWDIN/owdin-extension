@@ -83,6 +83,7 @@ class ActionListCard extends React.Component {
 
               return (
                 <CustomPanel
+                  key={action.global_action_seq}
                   header={(
                     <div>
                       <span>{action.action_trace.act.data.from}</span>
@@ -97,7 +98,6 @@ class ActionListCard extends React.Component {
                     </div>
                   )}
                   showArrow={false}
-                  key={action.global_action_seqm}
                 >
                   <div>block_time:{action.block_time}</div>
                   <div>block_num:{action.block_num}</div>
